@@ -66,7 +66,37 @@ class RestaurantController extends Controller
 
     public function update($id, Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'contact_info' => 'required|string|max:255',
+            'working_hours' => 'required|string|max:255',
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 422)->setStatusCode(422, 'Validation error');
+        }
+
+        $restaurant = Restaurant::find($id);
+
+        if(!$restaurant) return response()->json([
+            "status" => false,
+            "message" => "Restaurant not found!"
+        ], 404)->setStatusCode(404, 'Restaurant not found!');
+
+        $restaurant->name = $request->name;
+        $restaurant->address = $request->address;
+        $restaurant->contact_info = $request->contact_info;
+        $restaurant->working_hours = $request->working_hours;
+        $restaurant->save();
+
+        return response()->json([
+            "status" => true,
+            "product" => $restaurant
+        ], 200)->setStatusCode(200, 'Restaurant data is updated!');
     }
 
     public function destroy($id)
