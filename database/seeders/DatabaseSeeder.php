@@ -31,19 +31,10 @@ class DatabaseSeeder extends Seeder
             'password' => 'password'
         ]);
 
-        \App\Models\User::factory()->create([
-            'name' => 'Duo Megan',
-            'email' => 'duomegan@gmail.com',
-            'role' => 'waiter',
-            'password' => 'password'
-        ]);
-
         Table::factory()->times(3)->create();
 
         Dish::factory()->count(10)->create();
 
         Reservation::factory()->count(5)->create();
-
-        Order::factory()->count(2)->create();
     }
 }
