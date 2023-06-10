@@ -11,14 +11,20 @@ use Illuminate\Support\Facades\Validator;
 
 class RestaurantController extends Controller
 {
-    public function index(): \Illuminate\Http\JsonResponse
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
-        $restaurant = Restaurant::all();
+        $searchTerm = $request->input('search');
+
+        $restaurants = Restaurant::query()
+            ->where('name', 'LIKE', '%' . $searchTerm . '%')
+            ->get();
+
         return response()->json([
             "status" => true,
-            "restaurants" => new RestaurantCollection($restaurant)
+            "restaurants" => new RestaurantCollection($restaurants)
         ], 200)->setStatusCode(200, 'The resource has been fetched and transmitted in the message body.');
     }
+
 
     public function show($id): \Illuminate\Http\JsonResponse
     {
