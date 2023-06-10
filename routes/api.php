@@ -20,13 +20,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::post('/register', [AuthenticateController::class, 'register']);
 Route::post('/login', [AuthenticateController::class, 'login']);
 
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    // Маршруты, требующие аутентификации через Sanctum и роль администратора
+    Route::post('/restaurants', [RestaurantController::class, 'store']);
+    Route::put('/restaurants/{id}', [RestaurantController::class, 'update']);
+    Route::delete('/restaurants/{id}', [RestaurantController::class, 'destroy']);
+});
+
 Route::get('/restaurants', [RestaurantController::class, 'index']);
 Route::get('/restaurants/{id}', [RestaurantController::class, 'show']);
-Route::post('/restaurants', [RestaurantController::class, 'store']);
+/*Route::post('/restaurants', [RestaurantController::class, 'store']);
 Route::put('/restaurants/{id}', [RestaurantController::class, 'update']);
-Route::delete('/restaurants/{id}', [RestaurantController::class, 'destroy']);
+Route::delete('/restaurants/{id}', [RestaurantController::class, 'destroy']);*/
 
