@@ -20,7 +20,7 @@ class RestaurantController extends Controller
         ], 200)->setStatusCode(200, 'The resource has been fetched and transmitted in the message body.');
     }
 
-    public function show($id)
+    public function show($id): \Illuminate\Http\JsonResponse
     {
         $restaurant = Restaurant::find($id);
 
@@ -35,7 +35,7 @@ class RestaurantController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -64,7 +64,7 @@ class RestaurantController extends Controller
         ], 201)->setStatusCode(201, 'Restaurant created successfully!');
     }
 
-    public function update($id, Request $request)
+    public function update($id, Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
@@ -114,7 +114,7 @@ class RestaurantController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\JsonResponse
     {
         $restaurant = Restaurant::findOrFail($id);
         $restaurant->delete();

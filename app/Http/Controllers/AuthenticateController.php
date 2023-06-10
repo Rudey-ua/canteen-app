@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthenticateController extends Controller
 {
-    public function register(Request $request)
+    public function register(Request $request): \Illuminate\Http\JsonResponse
     {
         $user = User::create([
             'name' => $request->name,
@@ -25,7 +25,7 @@ class AuthenticateController extends Controller
         ]);
     }
 
-    public function login(Request $request)
+    public function login(Request $request): \Illuminate\Http\JsonResponse
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json('Invalid login credentials', 401);

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class DishController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
         $dishes = Dish::all();
 

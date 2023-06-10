@@ -21,7 +21,7 @@ class CategoryController extends Controller
         ], 200)->setStatusCode(200, 'The resource has been fetched and transmitted in the message body.');
     }
 
-    public function show($id)
+    public function show($id): \Illuminate\Http\JsonResponse
     {
         $categories = Category::find($id);
 
@@ -36,7 +36,7 @@ class CategoryController extends Controller
         ], 200);
     }
 
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request): \Illuminate\Http\JsonResponse
     {
         $categories = Category::create([
             "name" => $request->name,
@@ -48,7 +48,7 @@ class CategoryController extends Controller
         ], 201)->setStatusCode(201, 'Categories created successfully!');
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
@@ -82,7 +82,7 @@ class CategoryController extends Controller
         ], 200)->setStatusCode(200, 'Categories data is updated!');
     }
 
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\JsonResponse
     {
         $categories = Category::findOrFail($id);
         $categories->delete();
