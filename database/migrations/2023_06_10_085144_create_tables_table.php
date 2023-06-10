@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->integer('number');
             $table->integer('capacity');
-            $table->string('status');
+            $table->enum('status', ['reserved', 'free'])->default('free');
+            $table->unsignedBigInteger('restaurant_id');
             $table->timestamps();
+
+            $table->foreign('restaurant_id')->references('id')->on('restaurants');
         });
     }
 
