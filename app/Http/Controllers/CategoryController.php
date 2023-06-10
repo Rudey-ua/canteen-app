@@ -7,6 +7,7 @@ use App\Http\Resources\CategoryCollection;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Resources\Category as CategoryResource;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -47,8 +48,19 @@ class CategoryController extends Controller
         ], 201)->setStatusCode(201, 'Categories created successfully!');
     }
 
-    public function update(StoreCategoryRequest $request, $id)
+    public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|string|max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ], 422)->setStatusCode(422, 'Validation error');
+        }
+
         $categories = Category::find($id);
 
         if (!$categories) {
@@ -58,7 +70,10 @@ class CategoryController extends Controller
             ], 404)->setStatusCode(404, 'Categories not found!');
         }
 
-        $categories->name = $request->name;
+        if ($request->has('name')) {
+            $categories->name = $request->name;
+        }
+
         $categories->save();
 
         return response()->json([
