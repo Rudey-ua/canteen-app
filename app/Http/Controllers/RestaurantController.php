@@ -31,7 +31,7 @@ class RestaurantController extends Controller
 
         return response()->json([
             "status" => true,
-            "product" => new RestaurantResource($restaurant)
+            "restaurant" => new RestaurantResource($restaurant)
         ], 200);
     }
 

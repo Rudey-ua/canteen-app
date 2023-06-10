@@ -32,7 +32,7 @@ class CategoryController extends Controller
 
         return response()->json([
             "status" => true,
-            "categories" => new CategoryResource($categories)
+            "category" => new CategoryResource($categories)
         ], 200);
     }
 
