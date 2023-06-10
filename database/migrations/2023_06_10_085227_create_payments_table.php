@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id');
             $table->decimal('amount', 8, 2);
             $table->string('payment_method');
+            $table->boolean('is_paid')->default(false);
+            $table->string('payment_status')->default('pending');
             $table->timestamps();
 
             $table->foreign('order_id')->references('id')->on('orders');
