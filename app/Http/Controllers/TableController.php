@@ -6,12 +6,22 @@ use App\Http\Resources\TableCollection;
 use App\Models\Table;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\Table as TableResource;
+use Illuminate\Http\Request;
+
 
 class TableController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $tables = Table::all();
+        $status = $request->query('status');
+
+        $tables = Table::query();
+
+        $tables->when($status, function ($query, $status) {
+            return $query->where('status', $status);
+        });
+
+        $tables = $tables->get();
 
         return response()->json([
             "status" => true,
