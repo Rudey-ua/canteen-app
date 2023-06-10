@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DishController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +32,6 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::delete('/restaurants/{id}', [RestaurantController::class, 'destroy']);
 });
 
-/*Restaurants END*/
-
 /*Categories*/
 
 Route::get('/categories', [CategoryController::class, 'index']);
@@ -44,4 +43,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 });
 
-/*Categories END*/
+/*Dishes*/
+
+Route::get('/dishes', [DishController::class, 'index']);
+Route::get('/dishes/{id}', [DishController::class, 'show']);
