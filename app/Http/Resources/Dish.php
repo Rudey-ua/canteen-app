@@ -18,11 +18,11 @@ class Dish extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "price" => $this->price,
-            "category_id" => new Category($this->category),
+            "category" => new Category($this->category),
             "ingredients" => $this->ingredients,
             "special_requirements" => $this->special_requirements,
             "recipe" => $this->recipe,
-            "restaurant_id" => new Restaurant($this->restaurant)
+            "restaurant" => new Restaurant($this->restaurant)
         ];
     }
 }

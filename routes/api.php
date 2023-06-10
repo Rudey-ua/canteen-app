@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DishController;
+use App\Http\Controllers\TableController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +48,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 Route::get('/dishes', [DishController::class, 'index']);
 Route::get('/dishes/{id}', [DishController::class, 'show']);
+
+/*Tables*/
+
+Route::get('/tables', [TableController::class, 'index']);
+Route::get('/tables/{id}', [TableController::class, 'show']);
