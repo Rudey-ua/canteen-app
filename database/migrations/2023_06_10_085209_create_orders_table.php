@@ -13,14 +13,18 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('table_id');
             $table->dateTime('order_date');
             $table->string('status');
-            $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('table_id');
+            $table->unsignedBigInteger('restaurant_id');
+
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('table_id')->references('id')->on('tables');
+            $table->foreign('restaurant_id')->references('id')->on('restaurants');
+
+            $table->timestamps();
         });
     }
 
