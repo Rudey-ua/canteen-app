@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Dish;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\Restaurant;
 use App\Models\Table;
@@ -36,5 +37,7 @@ class DatabaseSeeder extends Seeder
         Dish::factory()->count(10)->create();
 
         Reservation::factory()->count(5)->create();
+
+        Payment::factory()->count(3)->create();
     }
 }
