@@ -67,10 +67,10 @@ class RestaurantController extends Controller
     public function update($id, Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'contact_info' => 'required|string|max:255',
-            'working_hours' => 'required|string|max:255',
+            'name' => 'sometimes|string|max:255',
+            'address' => 'sometimes|string|max:255',
+            'contact_info' => 'sometimes|string|max:255',
+            'working_hours' => 'sometimes|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -82,22 +82,37 @@ class RestaurantController extends Controller
 
         $restaurant = Restaurant::find($id);
 
-        if(!$restaurant) return response()->json([
-            "status" => false,
-            "message" => "Restaurant not found!"
-        ], 404)->setStatusCode(404, 'Restaurant not found!');
+        if (!$restaurant) {
+            return response()->json([
+                "status" => false,
+                "message" => "Restaurant not found!"
+            ], 404)->setStatusCode(404, 'Restaurant not found!');
+        }
 
-        $restaurant->name = $request->name;
-        $restaurant->address = $request->address;
-        $restaurant->contact_info = $request->contact_info;
-        $restaurant->working_hours = $request->working_hours;
+        if ($request->has('name')) {
+            $restaurant->name = $request->name;
+        }
+
+        if ($request->has('address')) {
+            $restaurant->address = $request->address;
+        }
+
+        if ($request->has('contact_info')) {
+            $restaurant->contact_info = $request->contact_info;
+        }
+
+        if ($request->has('working_hours')) {
+            $restaurant->working_hours = $request->working_hours;
+        }
+
         $restaurant->save();
 
         return response()->json([
             "status" => true,
-            "product" => $restaurant
+            "restaurant" => $restaurant
         ], 200)->setStatusCode(200, 'Restaurant data is updated!');
     }
+
 
     public function destroy($id)
     {
