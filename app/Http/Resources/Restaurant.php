@@ -19,7 +19,8 @@ class Restaurant extends JsonResource
             "name" => $this->name,
             "address" => $this->address,
             "contact_info" => $this->contact_info,
-            "working_hours" => $this->working_hours,
+            "opening_time" => $this->opening_time,
+            "closing_time" => $this->closing_time,
         ];
     }
 }

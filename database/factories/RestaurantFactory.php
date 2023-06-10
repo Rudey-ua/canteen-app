@@ -20,7 +20,8 @@ class RestaurantFactory extends Factory
             'name' => $this->faker->company,
             'address' => $this->faker->address,
             'contact_info' => $this->faker->phoneNumber,
-            'working_hours' => $this->faker->time('H:i') . ' - ' . $this->faker->time('H:i'),
+            'opening_time' => $this->faker->time('H:i'),
+            'closing_time' => $this->faker->time('H:i')
         ];
     }
 }
