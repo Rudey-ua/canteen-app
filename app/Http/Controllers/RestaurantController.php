@@ -4,31 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\RestaurantCollection;
 use App\Models\Restaurant;
-use Illuminate\Http\Request;
+use App\Http\Resources\Restaurant as RestaurantResource;
 
 class RestaurantController extends Controller
 {
     public function index(): \Illuminate\Http\JsonResponse
     {
-        $products = Restaurant::all();
+        $restaurant = Restaurant::all();
         return response()->json([
             "status" => true,
-            "restaurants" => new RestaurantCollection($products)
+            "restaurants" => new RestaurantCollection($restaurant)
         ], 200)->setStatusCode(200, 'The resource has been fetched and transmitted in the message body.');
     }
 
     public function show($id)
     {
-        $product = Restaurant::find($id);
+        $restaurant = Restaurant::find($id);
 
-        if(!$product) return response()->json([
+        if(!$restaurant) return response()->json([
             "status" => false,
             "message" => "Product not found!"
         ], 404)->setStatusCode(404, 'Product not found!');
 
         return response()->json([
             "status" => true,
-            "product" => new ProductResource($product)
+            "product" => new RestaurantResource($restaurant)
         ], 200);
     }
 }
