@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('payment_status')->default('pending');
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
         });
     }
 

@@ -17,12 +17,12 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 8, 2);
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->text('ingredients');
             $table->text('special_requirements')->nullable();
             $table->text('recipe')->nullable();
             $table->unsignedBigInteger('restaurant_id');
-            $table->foreign('restaurant_id')->references('id')->on('restaurants');
+            $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
             $table->timestamps();
         });
     }
