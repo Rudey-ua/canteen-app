@@ -17,6 +17,7 @@ class RestaurantController extends Controller
 
         $restaurants = Restaurant::query()
             ->where('name', 'LIKE', '%' . $searchTerm . '%')
+            ->orWhere('address', 'LIKE', '%' . $searchTerm . '%')
             ->get();
 
         return response()->json([
