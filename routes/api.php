@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,23 +17,28 @@ use App\Http\Controllers\RestaurantController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('/register', [AuthenticateController::class, 'register']);
 Route::post('/login', [AuthenticateController::class, 'login']);
 
+/*Restaurants*/
+
+Route::get('/restaurants', [RestaurantController::class, 'index']);
+Route::get('/restaurants/{id}', [RestaurantController::class, 'show']);
+
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    // Маршруты, требующие аутентификации через Sanctum и роль администратора
     Route::post('/restaurants', [RestaurantController::class, 'store']);
     Route::put('/restaurants/{id}', [RestaurantController::class, 'update']);
     Route::delete('/restaurants/{id}', [RestaurantController::class, 'destroy']);
 });
 
-Route::get('/restaurants', [RestaurantController::class, 'index']);
-Route::get('/restaurants/{id}', [RestaurantController::class, 'show']);
-/*Route::post('/restaurants', [RestaurantController::class, 'store']);
-Route::put('/restaurants/{id}', [RestaurantController::class, 'update']);
-Route::delete('/restaurants/{id}', [RestaurantController::class, 'destroy']);*/
+/*Restaurants END*/
 
+/*Categories*/
+
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::put('/categories/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+
+/*Categories END*/
