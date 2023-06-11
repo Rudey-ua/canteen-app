@@ -3,6 +3,12 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Dish;
+use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Reservation;
+use App\Models\Restaurant;
+use App\Models\Table;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +18,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory()->create([
+            'name' => 'John Shuts',
+            'email' => 'admin@admin.com',
+            'role' => 'admin',
+            'password' => 'password'
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        \App\Models\User::factory()->create([
+            'name' => 'Max Kostenko',
+            'email' => 'koctenko525@gmail.com',
+            'role' => 'client',
+            'password' => 'password'
+        ]);
+
+        Table::factory()->times(3)->create();
+
+        Dish::factory()->count(10)->create();
+
+        Reservation::factory()->count(5)->create();
+
+        Payment::factory()->count(3)->create();
     }
 }
