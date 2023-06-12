@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use App\Http\Resources\Reservation as ReservationResource;
 use App\Http\Resources\ReservationCollection;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 
 class ReservationController extends Controller
 {
@@ -14,23 +14,14 @@ class ReservationController extends Controller
         $reservation = Reservation::all();
 
         return response()->json([
-            "status" => true,
             "orders" => new ReservationCollection($reservation)
-        ], 200)->setStatusCode(200, 'The resource has been fetched and transmitted in the message body.');
+        ]);
     }
 
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show($id): JsonResponse
     {
-        $reservation = Reservation::find($id);
+        $reservation = Reservation::findOrFail($id);
 
-        if(!$reservation) return response()->json([
-            "status" => false,
-            "message" => "Reservation not found!"
-        ], 404)->setStatusCode(404, 'Reservation not found!');
-
-        return response()->json([
-            "status" => true,
-            "reservation" => new ReservationResource($reservation)
-        ], 200);
+        return response()->json( new ReservationResource($reservation));
     }
 }
