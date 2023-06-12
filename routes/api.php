@@ -49,6 +49,9 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 Route::get('/dishes', [DishController::class, 'index']);
 Route::get('/dishes/{id}', [DishController::class, 'show']);
+Route::post('/dishes', [DishController::class, 'store']);
+Route::patch('/dishes/{id}', [DishController::class, 'update']);
+Route::delete('/dishes/{id}', [DishController::class, 'destroy']);
 
 /*Tables*/
 
@@ -64,5 +67,6 @@ Route::get('/orders/{id}', [OrderController::class, 'show']);
 
 Route::get('/reservations', [ReservationController::class, 'index']);
 Route::get('/reservations/{id}', [ReservationController::class, 'show']);
+
 
 
