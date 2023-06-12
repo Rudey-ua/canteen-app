@@ -1,12 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +50,26 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 Route::get('/dishes', [DishController::class, 'index']);
 Route::get('/dishes/{id}', [DishController::class, 'show']);
 
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::post('/dishes', [DishController::class, 'store']);
+    Route::put('/dishes/{id}', [DishController::class, 'update']);
+    Route::delete('/dishes/{id}', [DishController::class, 'destroy']);
+});
+
 /*Tables*/
 
 Route::get('/tables', [TableController::class, 'index']);
 Route::get('/tables/{id}', [TableController::class, 'show']);
+
+/*Orders*/
+
+Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/orders/{id}', [OrderController::class, 'show']);
+
+/*Reservations*/
+
+Route::get('/reservations', [ReservationController::class, 'index']);
+Route::get('/reservations/{id}', [ReservationController::class, 'show']);
+
+
+

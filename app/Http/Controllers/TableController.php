@@ -24,23 +24,14 @@ class TableController extends Controller
         $tables = $tables->get();
 
         return response()->json([
-            "status" => true,
             "tables" => new TableCollection($tables)
-        ], 200)->setStatusCode(200, 'The resource has been fetched and transmitted in the message body.');
+        ]);
     }
 
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show($id): JsonResponse
     {
-        $tables = Table::find($id);
+        $tables = Table::findOrFail($id);
 
-        if(!$tables) return response()->json([
-            "status" => false,
-            "message" => "Tables not found!"
-        ], 404)->setStatusCode(404, 'Tables not found!');
-
-        return response()->json([
-            "status" => true,
-            "tables" => new TableResource($tables)
-        ], 200);
+        return response()->json(new TableResource($tables));
     }
 }

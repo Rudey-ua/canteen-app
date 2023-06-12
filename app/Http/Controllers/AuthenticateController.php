@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\RegisterUserRequest;
+use App\Http\Requests\User\LoginUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthenticateController extends Controller
 {
-    public function register(Request $request): \Illuminate\Http\JsonResponse
+    public function register(RegisterUserRequest $request): JsonResponse
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
+        $user = User::create($request->except('role'));
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -25,10 +22,12 @@ class AuthenticateController extends Controller
         ]);
     }
 
-    public function login(Request $request): \Illuminate\Http\JsonResponse
+    public function login(LoginUserRequest $request): JsonResponse
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json('Invalid login credentials', 401);
+        if (!Auth::attempt($request->validated())) {
+            return response()->json([
+                "message" => "Invalid login credentials"
+            ], 401);
         }
 
         $user = User::where('email',  $request->email)->firstOrFail();
