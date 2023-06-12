@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
-use App\Http\Requests\Dish\StoreCategoryRequest;
 use App\Http\Resources\Category as CategoryResource;
 use App\Http\Resources\CategoryCollection;
 use App\Models\Category;

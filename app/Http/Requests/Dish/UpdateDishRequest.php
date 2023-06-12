@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Category;
+namespace App\Http\Requests\Dish;
 
 use Illuminate\Foundation\Http\FormRequest;
 
