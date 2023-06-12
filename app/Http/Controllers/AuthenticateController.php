@@ -24,8 +24,10 @@ class AuthenticateController extends Controller
 
     public function login(LoginUserRequest $request): JsonResponse
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json('Invalid login credentials', 401);
+        if (!Auth::attempt($request->validated())) {
+            return response()->json([
+                "message" => "Invalid login credentials"
+            ], 401);
         }
 
         $user = User::where('email',  $request->email)->firstOrFail();
