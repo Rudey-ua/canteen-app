@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
+use App\Http\Requests\Dish\StoreCategoryRequest;
+use App\Http\Resources\Category as CategoryResource;
 use App\Http\Resources\CategoryCollection;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use App\Http\Resources\Category as CategoryResource;
-use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -30,19 +29,16 @@ class CategoryController extends Controller
 
     public function store(StoreCategoryRequest $request): JsonResponse
     {
-        $categories = Category::create([
-            "name" => $request->name,
-        ]);
+        $categories = Category::create($request->validated());
 
         return response()->json(new CategoryResource($categories), 201);
     }
 
-    public function update(StoreCategoryRequest $request, $id): JsonResponse
+    public function update(UpdateCategoryRequest $request, $id): JsonResponse
     {
         $categories = Category::findOrFail($id);
 
-        $categories->name = $request->name;
-        $categories->save();
+        $categories->update($request->validated());
 
         return response()->json(new CategoryResource($categories));
     }

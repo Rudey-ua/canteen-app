@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreDishRequest;
-use App\Http\Requests\UpdateDishRequest;
+use App\Http\Requests\Category\UpdateDishRequest;
+use App\Http\Requests\Dish\StoreDishRequest;
+use App\Http\Resources\Dish as DishResource;
 use App\Http\Resources\DishCollection;
 use App\Models\Dish;
-use App\Http\Resources\Dish as DishResource;
 use Illuminate\Http\JsonResponse;
 
 class DishController extends Controller
