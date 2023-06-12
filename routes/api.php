@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,3 +53,8 @@ Route::get('/dishes/{id}', [DishController::class, 'show']);
 
 Route::get('/tables', [TableController::class, 'index']);
 Route::get('/tables/{id}', [TableController::class, 'show']);
+
+/*Orders*/
+
+Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/orders/{id}', [OrderController::class, 'show']);
