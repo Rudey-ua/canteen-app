@@ -8,8 +8,6 @@ use App\Models\Restaurant;
 use App\Http\Resources\Restaurant as RestaurantResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-
 
 class RestaurantController extends Controller
 {

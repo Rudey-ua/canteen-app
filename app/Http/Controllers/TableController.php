@@ -29,7 +29,7 @@ class TableController extends Controller
         ], 200)->setStatusCode(200, 'The resource has been fetched and transmitted in the message body.');
     }
 
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show($id): JsonResponse
     {
         $tables = Table::find($id);
 

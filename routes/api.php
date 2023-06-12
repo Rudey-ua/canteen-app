@@ -49,9 +49,12 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 Route::get('/dishes', [DishController::class, 'index']);
 Route::get('/dishes/{id}', [DishController::class, 'show']);
-Route::post('/dishes', [DishController::class, 'store']);
-Route::patch('/dishes/{id}', [DishController::class, 'update']);
-Route::delete('/dishes/{id}', [DishController::class, 'destroy']);
+
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::post('/dishes', [DishController::class, 'store']);
+    Route::put('/dishes/{id}', [DishController::class, 'update']);
+    Route::delete('/dishes/{id}', [DishController::class, 'destroy']);
+});
 
 /*Tables*/
 
