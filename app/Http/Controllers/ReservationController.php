@@ -50,23 +50,16 @@ class ReservationController extends Controller
     public function update(UpdateReservationRequest $request, $id): JsonResponse
     {
         $reservation = Reservation::findOrFail($id);
-        $newTable = Table::findOrFail($request->validated()['table_id']);
+        $newTableId = $request->validated()['table_id'];
+        $newTable = Table::findOrFail($newTableId);
 
         if ($newTable->status === 'reserved') {
-            return response()->json(['error' => 'Table already have been booked.'], 400);
+            return response()->json(['error' => 'Table has already been booked.'], 400);
         }
 
-        $oldTable = $reservation->table;
-        $oldTable->status = 'free';
-        $oldTable->save();
-
-        $newTable->status = 'reserved';
-        $newTable->save();
-
-        $reservation->table_id = $newTable->id;
-        $reservation->save();
-
-        $reservation->update($request->validated());
+        $reservation->table->update(['status' => 'free']);
+        $newTable->update(['status' => 'reserved']);
+        $reservation->update($request->validated() + ['table_id' => $newTableId]);
 
         return response()->json(new ReservationResource($reservation));
     }
