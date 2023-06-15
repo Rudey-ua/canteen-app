@@ -10,7 +10,6 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Resources\Table as TableResource;
 use Illuminate\Http\Request;
 
-
 class TableController extends Controller
 {
     public function index(Request $request): JsonResponse

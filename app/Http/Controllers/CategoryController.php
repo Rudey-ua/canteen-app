@@ -46,6 +46,7 @@ class CategoryController extends Controller
     public function destroy($id): JsonResponse
     {
         $category = Category::findOrFail($id);
+
         $category->delete();
 
         return response()->json(null, 204);

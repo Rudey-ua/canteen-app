@@ -33,12 +33,12 @@ class DatabaseSeeder extends Seeder
             'password' => 'password'
         ]);
 
-        Table::factory()->times(3)->create();
+        Table::factory()->times(1)->create();
 
-        Dish::factory()->count(10)->create();
+        Dish::factory()->count(2)->create();
 
-        Reservation::factory()->count(5)->create();
+        Reservation::factory()->count(2)->create();
 
-        Payment::factory()->count(3)->create();
+        Payment::factory()->count(1)->create();
     }
 }
