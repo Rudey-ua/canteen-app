@@ -20,8 +20,8 @@ class OrderController extends Controller
 
     public function show($id): JsonResponse
     {
-        $orders = Order::findOrFail($id);
+        $order = Order::findOrFail($id);
 
-        return response()->json(new OrderResource($orders));
+        return response()->json(new OrderResource($order));
     }
 }

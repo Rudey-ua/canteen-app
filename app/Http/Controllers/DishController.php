@@ -22,16 +22,16 @@ class DishController extends Controller
 
     public function show($id): JsonResponse
     {
-        $dishes = Dish::findOrFail($id);
+        $dish = Dish::findOrFail($id);
 
-        return response()->json(new DishResource($dishes));
+        return response()->json(new DishResource($dish));
     }
 
     public function store(StoreDishRequest $request): JsonResponse
     {
-        $dishes = Dish::create($request->validated());
+        $dish = Dish::create($request->validated());
 
-        return response()->json(new DishResource($dishes), 201);
+        return response()->json(new DishResource($dish), 201);
     }
 
     public function update(UpdateDishRequest $request, $id): JsonResponse
