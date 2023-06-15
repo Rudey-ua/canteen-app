@@ -7,6 +7,7 @@ use App\Http\Requests\User\LoginUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\User as UserResource;
 
 class AuthenticateController extends Controller
 {
@@ -17,7 +18,7 @@ class AuthenticateController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            "user"  => $user,
+            "user"  => new UserResource($user),
             "token"  => $token
         ]);
     }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
-            $table->integer('number');
+            $table->integer('number')->unique();
             $table->integer('capacity');
             $table->enum('status', ['reserved', 'free'])->default('free');
             $table->unsignedBigInteger('restaurant_id');

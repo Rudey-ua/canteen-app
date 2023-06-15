@@ -22,31 +22,31 @@ class CategoryController extends Controller
 
     public function show($id): JsonResponse
     {
-        $categories = Category::findOrFail($id);
+        $category = Category::findOrFail($id);
 
-        return response()->json(new CategoryResource($categories));
+        return response()->json(new CategoryResource($category));
     }
 
     public function store(StoreCategoryRequest $request): JsonResponse
     {
-        $categories = Category::create($request->validated());
+        $category = Category::create($request->validated());
 
-        return response()->json(new CategoryResource($categories), 201);
+        return response()->json(new CategoryResource($category), 201);
     }
 
     public function update(UpdateCategoryRequest $request, $id): JsonResponse
     {
-        $categories = Category::findOrFail($id);
+        $category = Category::findOrFail($id);
 
-        $categories->update($request->validated());
+        $category->update($request->validated());
 
-        return response()->json(new CategoryResource($categories));
+        return response()->json(new CategoryResource($category));
     }
 
     public function destroy($id): JsonResponse
     {
-        $categories = Category::findOrFail($id);
-        $categories->delete();
+        $category = Category::findOrFail($id);
+        $category->delete();
 
         return response()->json(null, 204);
     }
