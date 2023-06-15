@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Dish;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class TableCollection extends ResourceCollection
+class DishCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.

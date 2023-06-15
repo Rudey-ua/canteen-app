@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Reservation;
 
+use App\Http\Resources\Restaurant\Restaurant;
+use App\Http\Resources\Table\Table;
+use App\Http\Resources\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 

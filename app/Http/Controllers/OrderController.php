@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\OrderCollection;
+use App\Http\Resources\Order\Order as OrderResource;
+use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
-use App\Http\Resources\Order as OrderResource;
 use Illuminate\Http\JsonResponse;
 
 class OrderController extends Controller

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
             $table->foreign('table_id')->references('id')->on('tables')->onDelete('cascade');
             $table->dateTime('reservation_date');
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

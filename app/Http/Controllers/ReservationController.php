@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Reservation\Reservation as ReservationResource;
+use App\Http\Resources\Reservation\ReservationCollection;
 use App\Models\Reservation;
-use App\Http\Resources\Reservation as ReservationResource;
-use App\Http\Resources\ReservationCollection;
 use Illuminate\Http\JsonResponse;
 
 class ReservationController extends Controller
@@ -23,5 +23,10 @@ class ReservationController extends Controller
         $reservation = Reservation::findOrFail($id);
 
         return response()->json( new ReservationResource($reservation));
+    }
+
+    public function store()
+    {
+
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Restaurant\UpdateRestaurantRequest;
-use App\Http\Resources\RestaurantCollection;
+use App\Http\Resources\Restaurant\Restaurant as RestaurantResource;
+use App\Http\Resources\Restaurant\RestaurantCollection;
 use App\Models\Restaurant;
-use App\Http\Resources\Restaurant as RestaurantResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
