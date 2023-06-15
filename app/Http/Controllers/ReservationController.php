@@ -47,18 +47,6 @@ class ReservationController extends Controller
         return response()->json(new ReservationResource($reservation));
     }
 
-    /*
-    * Что нужно сделать:
-     * Если я меняю #id столика на другой, то нужно проверить,
-     * свободный ли этот столик. DONE
-     *
-     * Если этот id нового стола имеет статус free, то нужно
-     * изменить его на `reserved`, а id старого стола на `free`
-     *
-     * Потом в таблице reservations изменить `table_id` на новый, в случае успеха DONE
-     *
-     * Сделать валидацию и обновление остальных полей (date, notes, user_id, restaurant_id) DONE
-    */
     public function update(UpdateReservationRequest $request, $id): JsonResponse
     {
         $reservation = Reservation::findOrFail($id);
@@ -78,7 +66,7 @@ class ReservationController extends Controller
         $reservation->table_id = $newTable->id;
         $reservation->save();
 
-        $reservation->update($request->except('table_id'));
+        $reservation->update($request->validated());
 
         return response()->json(new ReservationResource($reservation));
     }

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Table;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,10 +20,10 @@ class ReservationFactory extends Factory
     {
         return [
             'user_id' => function () {
-                return \App\Models\User::factory()->create()->id;
+                return User::factory()->create()->id;
             },
             'table_id' => function () {
-                return \App\Models\Table::factory()->create()->id;
+                return Table::factory()->create()->id;
             },
             'reservation_date' => $this->faker->dateTimeBetween('now', '+7 days'),
         ];
