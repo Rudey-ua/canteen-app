@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\Reservation;
 use App\Models\Restaurant;
 use App\Models\Table;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,17 +19,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory()->create([
+        User::factory()->create([
             'name' => 'John Shuts',
             'email' => 'admin@admin.com',
             'role' => 'admin',
             'password' => 'password'
         ]);
 
-        \App\Models\User::factory()->create([
+        User::factory()->create([
             'name' => 'Max Kostenko',
             'email' => 'koctenko525@gmail.com',
-            'role' => 'client',
+            'role' => 'customer',
             'password' => 'password'
         ]);
 
