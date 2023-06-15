@@ -22,7 +22,17 @@ class UpdateTableRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'number' => 'sometimes|integer|unique:tables,number',
+            'capacity' => 'sometimes|integer',
+            'status' => 'sometimes|in:free,reserved',
+            'restaurant_id' => 'sometimes|exists:restaurants,id'
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'status.in' => 'The status field must be either "free" or "reserved".',
         ];
     }
 }

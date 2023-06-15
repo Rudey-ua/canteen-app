@@ -37,20 +37,27 @@ class TableController extends Controller
         return response()->json(new TableResource($table));
     }
 
-    public function store(StoreTableRequest $request)
+    public function store(StoreTableRequest $request): JsonResponse
     {
         $table = Table::create($request->validated());
 
         return response()->json(new TableResource($table), 201);
     }
 
-    public function update(UpdateTableRequest $request, $id)
+    public function update(UpdateTableRequest $request, $id): JsonResponse
     {
+        $table = Table::findOrFail($id);
 
+        $table->update($request->validated());
+
+        return response()->json(new TableResource($table));
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
+        $table = Table::findOrFail($id);
+        $table->delete();
 
+        return response()->json(null, 204);
     }
 }

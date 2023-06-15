@@ -18,6 +18,7 @@ class Table extends JsonResource
             "id" => $this->id,
             "number" => $this->number,
             "capacity" => $this->capacity,
+            "restaurant" => new Restaurant($this->restaurant),
             "status" => $this->status ?? "free",
         ];
     }
