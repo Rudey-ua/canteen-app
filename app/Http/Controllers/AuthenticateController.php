@@ -13,7 +13,7 @@ class AuthenticateController extends Controller
 {
     public function register(RegisterUserRequest $request): JsonResponse
     {
-        $user = User::create($request->except('role'));
+        $user = User::create($request->validated());
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -38,7 +38,7 @@ class AuthenticateController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => $token
         ]);
     }

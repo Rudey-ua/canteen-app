@@ -24,7 +24,6 @@ class StoreTableRequest extends FormRequest
         return [
             'number' => 'required|integer|unique:tables,number',
             'capacity' => 'required|integer',
-            'status' => 'nullable|in:reserved,free',
             'restaurant_id' => 'required|exists:restaurants,id'
         ];
     }

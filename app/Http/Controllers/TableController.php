@@ -39,7 +39,7 @@ class TableController extends Controller
 
     public function store(StoreTableRequest $request)
     {
-        $table = Table::create($request->except('status'));
+        $table = Table::create($request->validated());
 
         return response()->json(new TableResource($table), 201);
     }
