@@ -25,9 +25,6 @@ class OrderFactory extends Factory
             'table_id' => function () {
                 return \App\Models\Table::factory()->create()->id;
             },
-            'restaurant_id' => function () {
-                return \App\Models\Restaurant::factory()->create()->id;
-            },
         ];
     }
 }

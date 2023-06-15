@@ -20,9 +20,6 @@ class ReservationFactory extends Factory
             'user_id' => function () {
                 return \App\Models\User::factory()->create()->id;
             },
-            'restaurant_id' => function () {
-                return \App\Models\Restaurant::factory()->create()->id;
-            },
             'table_id' => function () {
                 return \App\Models\Table::factory()->create()->id;
             },
