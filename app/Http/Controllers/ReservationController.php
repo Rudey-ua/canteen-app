@@ -54,6 +54,8 @@ class ReservationController extends Controller
      *
      * Если этот id нового стола имеет статус free, то нужно
      * изменить его на `reserved`, а id старого стола на `free`
+     *
+     * Потом в таблице reservations изменить `table_id` на новый, в случае успеха
     */
     public function update(UpdateReservationRequest $request, $id): JsonResponse
     {
@@ -71,6 +73,9 @@ class ReservationController extends Controller
 
         $newTable->status = 'reserved';
         $newTable->save();
+
+        $reservation->table_id = $newTable->id;
+        $reservation->save();
 
         return response()->json(new ReservationResource($reservation));
     }
