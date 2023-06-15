@@ -23,7 +23,6 @@ class Order extends JsonResource
             "status" => $this->status,
             "user" => new User($this->user),
             "table" => new Table($this->table),
-            "restaurant" => new Restaurant($this->restaurant)
         ];
     }
 }

@@ -23,7 +23,6 @@ class UpdateReservationRequest extends FormRequest
     {
         return [
             'user_id' => 'sometimes|exists:users,id',
-            'restaurant_id' => 'sometimes|exists:restaurants,id',
             'table_id' => 'sometimes|exists:tables,id',
             'reservation_date' => 'sometimes|date',
             'note' => 'sometimes|string',

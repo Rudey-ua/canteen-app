@@ -23,7 +23,6 @@ class StoreReservationRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
-            'restaurant_id' => 'required|exists:restaurants,id',
             'table_id' => 'required|exists:tables,id',
             'reservation_date' => 'required|date',
             'note' => 'nullable|string',

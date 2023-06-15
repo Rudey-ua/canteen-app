@@ -20,7 +20,6 @@ class Reservation extends JsonResource
         return [
             "id" => $this->id,
             "user" => new User($this->user),
-            "restaurant" => new Restaurant($this->restaurant),
             "table" => new Table($this->table),
             "reservation_date" => $this->reservation_date,
             "note" => $this->note
