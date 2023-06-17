@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\Table;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\Payment\Payment as PaymentResource;
 
 class OrderController extends Controller
 {
@@ -74,7 +75,7 @@ class OrderController extends Controller
         return response()->json([
             'message' => 'Order created successfully',
             'order' => new OrderResource($order),
-            'payment' => new $payment
+            'payment' => new PaymentResource($payment)
         ], 201);
     }
 
