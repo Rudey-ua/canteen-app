@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Dish\StoreDishRequest;
 use App\Http\Requests\Dish\UpdateDishRequest;
-use App\Http\Resources\Dish\Dish as DishResource;
+use App\Http\Resources\Dish\DishResource;
 use App\Http\Resources\Dish\DishCollection;
 use App\Models\Dish;
 use Illuminate\Http\JsonResponse;

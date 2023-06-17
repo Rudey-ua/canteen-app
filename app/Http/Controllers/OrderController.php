@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Order\StoreOrderRequest;
-use App\Http\Resources\Order\Order as OrderResource;
+use App\Http\Resources\Order\OrderResource;
 use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
 use App\Services\OrderService;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\Payment\Payment as PaymentResource;
+use App\Http\Resources\Payment\PaymentResource as PaymentResource;
 
 class OrderController extends Controller
 {

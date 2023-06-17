@@ -2,13 +2,13 @@
 
 namespace App\Http\Resources\Order;
 
-use App\Http\Resources\Restaurant\Restaurant;
-use App\Http\Resources\Table\Table;
-use App\Http\Resources\User\User;
+use App\Http\Resources\Restaurant\RestaurantResource;
+use App\Http\Resources\Table\TableResource;
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Order extends JsonResource
+class OrderResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,8 +21,8 @@ class Order extends JsonResource
             "id" => $this->id,
             "order_date" => $this->order_date,
             "status" => $this->status,
-            "user" => new User($this->user),
-            "table" => new Table($this->table),
+            "user" => new UserResource($this->user),
+            "table" => new TableResource($this->table),
         ];
     }
 }

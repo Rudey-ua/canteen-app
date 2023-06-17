@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Payment\PaymentCollection;
+use App\Http\Resources\Payment\PaymentResource;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Table;
@@ -72,9 +73,7 @@ class PaymentController extends Controller
         $payment->payment_status = 'completed';
         $payment->save();
 
-        return response()->json([
-            "message" => "Order successfully paid!",
-        ], 200);
+        return response()->json(['payment' => new PaymentResource($payment)], 200);
     }
 
     public function cancel()

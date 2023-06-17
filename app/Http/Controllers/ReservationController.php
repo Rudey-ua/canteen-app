@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Reservation\StoreReservationRequest;
 use App\Http\Requests\Reservation\UpdateReservationRequest;
-use App\Http\Resources\Reservation\Reservation as ReservationResource;
+use App\Http\Resources\Reservation\ReservationResource;
 use App\Http\Resources\Reservation\ReservationCollection;
 use App\Models\Reservation;
 use App\Models\Table;
