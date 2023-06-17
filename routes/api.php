@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PaymentController;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\RestaurantController;
@@ -91,13 +92,9 @@ Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
 Route::get('/payments', [PaymentController::class, 'index']);
 Route::post('/payments', [PaymentController::class, 'store']);
 
-Route::get('/success', function () {
+Route::get('/success', [PaymentController::class, 'success']);
+Route::get('/cancel', [PaymentController::class, 'cancel']);
 
-});
-
-Route::get('/cancel', function () {
-
-});
 
 
 

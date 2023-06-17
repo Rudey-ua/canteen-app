@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime('order_date');
 
-            $table->enum('status', ['ordered', 'preparing', 'ready', 'served', 'paid'])->default('ordered');
+            $table->enum('status', ['ordered', 'served', 'paid'])->default('ordered');
             $table->decimal('total_amount', 8, 2)->nullable();
 
             $table->unsignedBigInteger('user_id');

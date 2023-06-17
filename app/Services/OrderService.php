@@ -9,8 +9,6 @@ use App\Models\Reservation;
 use App\Models\Table;
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Stripe\Charge;
-use Stripe\Stripe;
 
 class OrderService
 {
@@ -88,27 +86,5 @@ class OrderService
             'payment_method' => $validated['payment_method'],
             'payment_status' => 'pending'
         ]);
-    }
-
-    public static function processPayment(Order $order, string $token): Payment
-    {
-        Stripe::setApiKey(config('services.stripe.secret'));
-
-        $charge = Charge::create([
-            'amount' => $order->total_amount * 100,
-            'currency' => 'usd',
-            'description' => 'Order payment #' . $order->id,
-            'source' => $token,
-        ]);
-
-        if ($charge->paid) {
-            $payment = Payment::where('order_id', $order->id)->first();
-            $payment->payment_status = 'completed';
-            $payment->save();
-        } else {
-            throw new Exception('The payment attempt failed');
-        }
-
-        return $payment;
     }
 }

@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Payment\PaymentCollection;
 use App\Models\Order;
 use App\Models\Payment;
-use App\Services\OrderService;
+use App\Models\Table;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
@@ -23,36 +24,24 @@ class PaymentController extends Controller
 
     public function store(Request $request)
     {
-        /*$order = Order::findOrFail($request->input('order_id'));
-
-        try {
-            OrderService::processPayment($order, $request->input('stripeToken'));
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
-        }*/
-
-        $request->validate([
-            'order_id' => 'required|exists:orders,id',
-        ]);
-
         Stripe::setApiKey(config('services.stripe.secret'));
+        $order = Order::with('dishes')->findOrFail($request->input('order_id'));
 
-        $order = Order::find($request->input('order_id'));
+        $line_items = [];
 
-        $line_items = [
-            [
+        foreach($order->dishes as $dish) {
+            $line_items[] = [
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name' => 'Ваш заказ',
+                        'name' => $dish->name,
                     ],
-                    'unit_amount' => $order->total_amount * 100,
+                    'unit_amount' => $dish->price * 100, // Stripe charges in cents
                 ],
-                'quantity' => 1,
-            ],
-        ];
+                'quantity' => $dish->pivot->quantity,
+            ];
+        }
 
-        // Создайте новую сессию Checkout
         $checkout_session = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => $line_items,
@@ -61,7 +50,43 @@ class PaymentController extends Controller
             'cancel_url' => 'http://127.0.0.1:8000/api/cancel',
         ]);
 
-        // Перенаправьте пользователя на URL-адрес Checkout
+        $payment = $order->payment;
+        $payment->transaction_id = $checkout_session->id;
+        $payment->save();
+
         return response()->json(['url' => $checkout_session->url], 200);
+    }
+
+    public function success(): JsonResponse
+    {
+        $payment = Payment::where('transaction_id', request()->only('session_id'))->first();
+        $order = Order::where('id', $payment->order_id)->first();
+        $table = Table::where('id', $order->table_id)->first();
+
+        $order->status = 'paid';
+        $order->save();
+
+        $table->status = 'free';
+        $table->save();
+
+        $payment->payment_status = 'completed';
+        $payment->save();
+
+        return response()->json([
+            "message" => "Order successfully paid!",
+        ], 200);
+    }
+
+    public function cancel()
+    {
+        $stripeSessionId = request()->only('session_id');
+
+        $payment = Payment::where('transaction_id', $stripeSessionId)->first();
+        $payment->payment_status = "canceled";
+        $payment->save();
+
+        return response()->json([
+            "message" => "Order is cancelled."
+        ], 200);
     }
 }

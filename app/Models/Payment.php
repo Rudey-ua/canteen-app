@@ -9,4 +9,9 @@ class Payment extends Model
 {
     use HasFactory;
     protected $guarded = false;
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }
