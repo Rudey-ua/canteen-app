@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Dish;
+namespace App\Http\Requests\Reservation;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreDishRequest extends FormRequest
+class StoreReservationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,13 +22,10 @@ class StoreDishRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'category_id' => 'required|exists:categories,id',
-            'ingredients' => 'required|string',
-            'recipe' => 'nullable|string',
-            'restaurant_id' => 'required|exists:restaurants,id',
+            'user_id' => 'required|exists:users,id',
+            'table_id' => 'required|exists:tables,id',
+            'reservation_date' => 'required|date',
+            'note' => 'nullable|string',
         ];
     }
 }

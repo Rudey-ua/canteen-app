@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,13 +23,12 @@ class DishFactory extends Factory
             'description' => $this->faker->paragraph(2),
             'price' => $this->faker->randomFloat(2, 5, 50),
             'category_id' => function () {
-                return \App\Models\Category::factory()->create()->id;
+                return Category::factory()->create()->id;
             },
-            'ingredients' => $this->faker->text,
-            'special_requirements' => $this->faker->text,
-            'recipe' => $this->faker->text,
+            'ingredients' => $this->faker->sentence(4),
+            'recipe' => $this->faker->sentence(6),
             'restaurant_id' => function () {
-                return \App\Models\Restaurant::factory()->create()->id;
+                return Restaurant::factory()->create()->id;
             },
         ];
     }

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Table;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,17 +18,16 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
+        $statuses = ['ordered', 'preparing', 'ready', 'served', 'paid'];
+
         return [
             'order_date' => $this->faker->dateTimeBetween('-1 month', 'now'),
-            'status' => $this->faker->randomElement(['pending', 'completed', 'cancelled']),
+            'status' => $this->faker->randomElement($statuses),
             'user_id' => function () {
-                return \App\Models\User::factory()->create()->id;
+                return User::factory()->create()->id;
             },
             'table_id' => function () {
-                return \App\Models\Table::factory()->create()->id;
-            },
-            'restaurant_id' => function () {
-                return \App\Models\Restaurant::factory()->create()->id;
+                return Table::factory()->create()->id;
             },
         ];
     }

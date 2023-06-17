@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
-use App\Http\Resources\Category as CategoryResource;
-use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\Category\Category as CategoryResource;
+use App\Http\Resources\Category\CategoryCollection;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 
@@ -20,10 +20,8 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Category $category): JsonResponse
     {
-        $category = Category::findOrFail($id);
-
         return response()->json(new CategoryResource($category));
     }
 
@@ -34,18 +32,15 @@ class CategoryController extends Controller
         return response()->json(new CategoryResource($category), 201);
     }
 
-    public function update(UpdateCategoryRequest $request, $id): JsonResponse
+    public function update(UpdateCategoryRequest $request, Category $category): JsonResponse
     {
-        $category = Category::findOrFail($id);
-
         $category->update($request->validated());
 
         return response()->json(new CategoryResource($category));
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Category $category): JsonResponse
     {
-        $category = Category::findOrFail($id);
         $category->delete();
 
         return response()->json(null, 204);

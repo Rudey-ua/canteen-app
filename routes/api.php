@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\RestaurantController;
@@ -26,54 +28,73 @@ Route::post('/login', [AuthenticateController::class, 'login']);
 /*Restaurants*/
 
 Route::get('/restaurants', [RestaurantController::class, 'index']);
-Route::get('/restaurants/{id}', [RestaurantController::class, 'show']);
+Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/restaurants', [RestaurantController::class, 'store']);
-    Route::put('/restaurants/{id}', [RestaurantController::class, 'update']);
-    Route::delete('/restaurants/{id}', [RestaurantController::class, 'destroy']);
+    Route::put('/restaurants/{restaurant}', [RestaurantController::class, 'update']);
+    Route::delete('/restaurants/{restaurant}', [RestaurantController::class, 'destroy']);
 });
 
 /*Categories*/
 
 Route::get('/categories', [CategoryController::class, 'index']);
-Route::get('/categories/{id}', [CategoryController::class, 'show']);
+Route::get('/categories/{category}', [CategoryController::class, 'show']);
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/categories', [CategoryController::class, 'store']);
-    Route::put('/categories/{id}', [CategoryController::class, 'update']);
-    Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+    Route::put('/categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
 });
 
 /*Dishes*/
 
 Route::get('/dishes', [DishController::class, 'index']);
-Route::get('/dishes/{id}', [DishController::class, 'show']);
+Route::get('/dishes/{dish}', [DishController::class, 'show']);
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/dishes', [DishController::class, 'store']);
-    Route::put('/dishes/{id}', [DishController::class, 'update']);
-    Route::delete('/dishes/{id}', [DishController::class, 'destroy']);
+    Route::put('/dishes/{dish}', [DishController::class, 'update']);
+    Route::delete('/dishes/{dish}', [DishController::class, 'destroy']);
 });
 
 /*Tables*/
 
 Route::get('/tables', [TableController::class, 'index']);
-Route::get('/tables/{id}', [TableController::class, 'show']);
+Route::get('/tables/{table}', [TableController::class, 'show']);
 
-Route::post('/tables', [TableController::class, 'store']);
-Route::put('/tables/{id}', [TableController::class, 'update']);
-Route::delete('/tables/{id}', [TableController::class, 'destroy']);
-
-/*Orders*/
-
-Route::get('/orders', [OrderController::class, 'index']);
-Route::get('/orders/{id}', [OrderController::class, 'show']);
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::post('/tables', [TableController::class, 'store']);
+    Route::put('/tables/{table}', [TableController::class, 'update']);
+    Route::delete('/tables/{table}', [TableController::class, 'destroy']);
+});
 
 /*Reservations*/
 
 Route::get('/reservations', [ReservationController::class, 'index']);
-Route::get('/reservations/{id}', [ReservationController::class, 'show']);
+Route::get('/reservations/{reservation}', [ReservationController::class, 'show']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/reservations', [ReservationController::class, 'store']);
+    Route::put('/reservations/{id}', [ReservationController::class, 'update']);
+    Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy']);
+});
+
+/*Orders*/
+
+Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/orders/{order}', [OrderController::class, 'show']);
+Route::post('/orders', [OrderController::class, 'store']);
+Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
+
+/*Payments*/
+
+Route::get('/payments', [PaymentController::class, 'index']);
+Route::post('/payments', [PaymentController::class, 'store']);
+
+Route::get('/success', [PaymentController::class, 'success']);
+Route::get('/cancel', [PaymentController::class, 'cancel']);
+
 
 
 

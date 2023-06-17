@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
-            $table->id();
+        Schema::create('dish_order', function (Blueprint $table) {
             $table->unsignedBigInteger('order_id');
-            $table->decimal('amount', 8, 2);
-            $table->string('payment_method');
-            $table->string('transaction_id')->nullable();
-            $table->enum('payment_status', ['pending', 'completed', 'canceled'])->default('pending');
-            $table->timestamps();
+            $table->unsignedBigInteger('dish_id');
+            $table->integer('quantity');
 
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->foreign('dish_id')->references('id')->on('dishes')->onDelete('cascade');
+
+            $table->primary(['order_id', 'dish_id']);
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('dish_order');
     }
 };

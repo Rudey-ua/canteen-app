@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Table\StoreTableRequest;
 use App\Http\Requests\Table\UpdateTableRequest;
-use App\Http\Resources\TableCollection;
+use App\Http\Resources\Table\Table as TableResource;
+use App\Http\Resources\Table\TableCollection;
 use App\Models\Table;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\Table as TableResource;
 use Illuminate\Http\Request;
-
 
 class TableController extends Controller
 {
@@ -30,10 +29,8 @@ class TableController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Table $table): JsonResponse
     {
-        $table = Table::findOrFail($id);
-
         return response()->json(new TableResource($table));
     }
 
@@ -44,18 +41,15 @@ class TableController extends Controller
         return response()->json(new TableResource($table), 201);
     }
 
-    public function update(UpdateTableRequest $request, $id): JsonResponse
+    public function update(UpdateTableRequest $request, Table $table): JsonResponse
     {
-        $table = Table::findOrFail($id);
-
         $table->update($request->validated());
 
         return response()->json(new TableResource($table));
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Table $table): JsonResponse
     {
-        $table = Table::findOrFail($id);
         $table->delete();
 
         return response()->json(null, 204);

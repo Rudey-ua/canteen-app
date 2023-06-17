@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Restaurant\UpdateRestaurantRequest;
-use App\Http\Resources\RestaurantCollection;
+use App\Http\Resources\Restaurant\Restaurant as RestaurantResource;
+use App\Http\Resources\Restaurant\RestaurantCollection;
 use App\Models\Restaurant;
-use App\Http\Resources\Restaurant as RestaurantResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -25,10 +25,8 @@ class RestaurantController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Restaurant $restaurant): JsonResponse
     {
-        $restaurant = Restaurant::findOrFail($id);
-
         return response()->json(new RestaurantResource($restaurant));
     }
 
@@ -39,18 +37,15 @@ class RestaurantController extends Controller
         return response()->json(new RestaurantResource($restaurant));
     }
 
-    public function update($id, UpdateRestaurantRequest $request): JsonResponse
+    public function update(UpdateRestaurantRequest $request, Restaurant $restaurant): JsonResponse
     {
-        $restaurant = Restaurant::findOrFail($id);
-
         $restaurant->update($request->validated());
 
         return response()->json(new RestaurantResource($restaurant));
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Restaurant $restaurant): JsonResponse
     {
-        $restaurant = Restaurant::findOrFail($id);
         $restaurant->delete();
 
         return response()->json(null, 204);

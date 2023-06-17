@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->dateTime('order_date');
-            $table->string('status');
+
+            $table->enum('status', ['ordered', 'served', 'paid'])->default('ordered');
+            $table->decimal('total_amount', 8, 2)->nullable();
 
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('table_id');
-            $table->unsignedBigInteger('restaurant_id');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('table_id')->references('id')->on('tables')->onDelete('cascade');
-            $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
 
             $table->timestamps();
         });

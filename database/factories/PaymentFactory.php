@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,11 +19,10 @@ class PaymentFactory extends Factory
     {
         return [
             'order_id' => function () {
-                return \App\Models\Order::factory()->create()->id;
+                return Order::factory()->create()->id;
             },
             'amount' => $this->faker->randomFloat(2, 10, 1000),
             'payment_method' => $this->faker->randomElement(['credit_card', 'paypal', 'bank_transfer']),
-            'is_paid' => $this->faker->boolean(),
             'payment_status' => $this->faker->randomElement(['pending', 'completed', 'cancelled']),
         ];
     }
