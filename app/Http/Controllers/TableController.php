@@ -29,10 +29,8 @@ class TableController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Table $table): JsonResponse
     {
-        $table = Table::findOrFail($id);
-
         return response()->json(new TableResource($table));
     }
 
@@ -43,18 +41,15 @@ class TableController extends Controller
         return response()->json(new TableResource($table), 201);
     }
 
-    public function update(UpdateTableRequest $request, $id): JsonResponse
+    public function update(UpdateTableRequest $request, Table $table): JsonResponse
     {
-        $table = Table::findOrFail($id);
-
         $table->update($request->validated());
 
         return response()->json(new TableResource($table));
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Table $table): JsonResponse
     {
-        $table = Table::findOrFail($id);
         $table->delete();
 
         return response()->json(null, 204);

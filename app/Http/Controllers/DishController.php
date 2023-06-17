@@ -20,10 +20,8 @@ class DishController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Dish $dish): JsonResponse
     {
-        $dish = Dish::findOrFail($id);
-
         return response()->json(new DishResource($dish));
     }
 
@@ -34,18 +32,16 @@ class DishController extends Controller
         return response()->json(new DishResource($dish), 201);
     }
 
-    public function update(UpdateDishRequest $request, $id): JsonResponse
+    public function update(UpdateDishRequest $request, Dish $dish): JsonResponse
     {
-        $dish = Dish::findOrFail($id);
-
         $dish->update($request->validated());
 
         return response()->json(new DishResource($dish));
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Dish $dish): JsonResponse
     {
-        Dish::findOrFail($id)->delete();
+        $dish->delete();
 
         return response()->json(null, 204);
     }

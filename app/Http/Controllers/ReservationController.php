@@ -8,14 +8,11 @@ use App\Http\Resources\Reservation\Reservation as ReservationResource;
 use App\Http\Resources\Reservation\ReservationCollection;
 use App\Models\Reservation;
 use App\Models\Table;
-use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
-
 
 class ReservationController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $reservation = Reservation::all();
 
@@ -24,10 +21,8 @@ class ReservationController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Reservation $reservation): JsonResponse
     {
-        $reservation = Reservation::findOrFail($id);
-
         return response()->json( new ReservationResource($reservation));
     }
 
@@ -49,6 +44,7 @@ class ReservationController extends Controller
 
     public function update(UpdateReservationRequest $request, $id): JsonResponse
     {
+        //TODO: скорее всего я не смогу обновить поля резервации если передам тот же самый id который был при создании бронирования
         $reservation = Reservation::findOrFail($id);
         $newTableId = $request->validated()['table_id'];
         $newTable = Table::findOrFail($newTableId);
@@ -64,11 +60,10 @@ class ReservationController extends Controller
         return response()->json(new ReservationResource($reservation));
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Reservation $reservation): JsonResponse
     {
-        $table = Reservation::findOrFail($id);
+        $reservation->delete();
 
-        $table->delete();
         return response()->json(null, 204);
     }
 }

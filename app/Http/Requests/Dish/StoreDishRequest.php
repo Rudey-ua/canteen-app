@@ -27,7 +27,6 @@ class StoreDishRequest extends FormRequest
             'price' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
             'ingredients' => 'required|string',
-            'special_requirements' => 'nullable|string',
             'recipe' => 'nullable|string',
             'restaurant_id' => 'required|exists:restaurants,id',
         ];
