@@ -64,7 +64,7 @@ class OrderController extends Controller
                 }
             } else {
                 // If the table is not reserved, reserve it for this user
-                $table->status = 'reserved';
+                $table->status = 'ordered';
                 $table->save();
 
                 Reservation::create([
@@ -113,6 +113,10 @@ class OrderController extends Controller
 
     public function destroy(Order $order): JsonResponse
     {
+        $table = $order->table;
+        $table->status = 'free';
+        $table->save();
+
         $order->delete();
         return response()->json(null, 204);
     }

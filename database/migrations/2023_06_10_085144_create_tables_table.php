@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('number')->unique();
             $table->integer('capacity');
-            $table->enum('status', ['reserved', 'free'])->default('free');
+            $table->enum('status', ['reserved', 'free', 'ordered'])->default('free');
             $table->unsignedBigInteger('restaurant_id');
             $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
             $table->timestamps();

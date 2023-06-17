@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,9 +20,9 @@ class TableFactory extends Factory
         return [
             'number' => $this->faker->unique()->numberBetween(1, 20),
             'capacity' => $this->faker->numberBetween(2, 8),
-            'status' => $this->faker->randomElement(['reserved', 'free']),
+            'status' => 'free',
             'restaurant_id' => function () {
-                return \App\Models\Restaurant::factory()->create()->id;
+                return Restaurant::factory()->create()->id;
             },
         ];
     }

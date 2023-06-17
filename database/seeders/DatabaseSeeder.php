@@ -36,9 +36,5 @@ class DatabaseSeeder extends Seeder
         Table::factory()->times(2)->create();
 
         Dish::factory()->count(2)->create();
-
-        Reservation::factory()->count(1)->create();
-
-        Payment::factory()->count(1)->create();
     }
 }
