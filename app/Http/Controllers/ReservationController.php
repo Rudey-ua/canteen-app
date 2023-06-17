@@ -62,8 +62,11 @@ class ReservationController extends Controller
 
     public function destroy(Reservation $reservation): JsonResponse
     {
-        $reservation->delete();
+        $table = $reservation->table;
+        $table->status = 'free';
+        $table->save();
 
+        $reservation->delete();
         return response()->json(null, 204);
     }
 }
