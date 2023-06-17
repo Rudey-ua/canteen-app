@@ -89,6 +89,15 @@ Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
 /*Payments*/
 
 Route::get('/payments', [PaymentController::class, 'index']);
-Route::post('/pay', [PaymentController::class, 'pay']);
+Route::post('/payments', [PaymentController::class, 'store']);
+
+Route::get('/success', function () {
+
+});
+
+Route::get('/cancel', function () {
+
+});
+
 
 

@@ -19,7 +19,6 @@ class Payment extends JsonResource
             'order_id' => $this->order_id,
             'amount' => $this->amount,
             'payment_method' => $this->payment_method,
-            'is_paid' => $this->is_paid,
             'payment_status' => $this->payment_status,
             'created_at' => $this->created_at,
         ];
