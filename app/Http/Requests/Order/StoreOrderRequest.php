@@ -25,6 +25,7 @@ class StoreOrderRequest extends FormRequest
             'user_id' => 'required|exists:users,id',
             'table_id' => 'required|exists:tables,id',
             'dishes' => 'required|array',
+            'payment_method' => 'required|string',
             'dishes.*.id' => 'required|exists:dishes,id',
             'dishes.*.quantity' => 'required|integer|min:1'
         ];
