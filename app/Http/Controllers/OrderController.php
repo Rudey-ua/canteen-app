@@ -23,14 +23,12 @@ class OrderController extends Controller
         ]);
     }
 
-    public function show($id): JsonResponse
+    public function show(Order $order): JsonResponse
     {
-        $order = Order::findOrFail($id);
-
         return response()->json(new OrderResource($order));
     }
 
-    public function store(StoreOrderRequest $request)
+    public function store(StoreOrderRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $table = Table::find($validated['table_id']);

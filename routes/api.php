@@ -83,8 +83,7 @@ Route::middleware('auth:sanctum')->group(function () {
 /*Orders*/
 
 Route::get('/orders', [OrderController::class, 'index']);
-Route::get('/orders/{id}', [OrderController::class, 'show']);
-
+Route::get('/orders/{order}', [OrderController::class, 'show']);
 Route::post('/orders', [OrderController::class, 'store']);
 Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
 
