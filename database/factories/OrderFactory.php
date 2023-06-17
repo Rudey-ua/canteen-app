@@ -18,9 +18,11 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
+        $statuses = ['ordered', 'preparing', 'ready', 'served', 'paid'];
+
         return [
             'order_date' => $this->faker->dateTimeBetween('-1 month', 'now'),
-            'status' => $this->faker->randomElement(['pending', 'completed', 'cancelled']),
+            'status' => $this->faker->randomElement($statuses),
             'user_id' => function () {
                 return User::factory()->create()->id;
             },

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->dateTime('order_date');
-            $table->string('status');
+            $table->enum('status', ['ordered', 'preparing', 'ready', 'served', 'paid'])->default('ordered');
 
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('table_id');

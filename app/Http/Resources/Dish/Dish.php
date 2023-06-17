@@ -22,7 +22,6 @@ class Dish extends JsonResource
             "price" => $this->price,
             "category" => new Category($this->category),
             "ingredients" => $this->ingredients,
-            "special_requirements" => $this->special_requirements,
             "recipe" => $this->recipe,
             "restaurant" => new Restaurant($this->restaurant)
         ];
