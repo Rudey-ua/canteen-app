@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('table_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('table_id')->references('id')->on('tables')->onDelete('cascade');
             $table->dateTime('reservation_date');
             $table->string('note')->nullable();
+            $table->integer('guests_number');
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('table_id')->references('id')->on('tables')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
