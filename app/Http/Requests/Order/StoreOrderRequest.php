@@ -22,7 +22,6 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'table_id' => 'required|exists:tables,id',
             'dishes' => 'required|array',
             'payment_method' => 'required|string',

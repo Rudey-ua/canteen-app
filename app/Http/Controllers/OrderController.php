@@ -30,8 +30,11 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request): JsonResponse
     {
         try {
-            $order = OrderService::createOrder($request->validated());
-            $payment = OrderService::createPayment($order, $request->validated());
+            $userData = $request->validated();
+            $userData['user_id'] = auth()->user()->id;
+
+            $order = OrderService::createOrder($userData);
+            $payment = OrderService::createPayment($order, $userData);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }
@@ -41,6 +44,7 @@ class OrderController extends Controller
             'payment' => new PaymentResource($payment)
         ], 201);
     }
+
 
     public function destroy(Order $order): JsonResponse
     {
