@@ -33,6 +33,11 @@ class OrderController extends Controller
     {
         $reservation = Reservation::find($request['reservation_id']);
 
+        //TODO: make implementation if user don`t create reservation
+        if(isset($request['reservation_id'])) {
+
+        }
+
         try {
             $userData = $request->validated();
             $userData['user_id'] = auth()->user()->id;
