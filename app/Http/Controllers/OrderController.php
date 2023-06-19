@@ -6,6 +6,8 @@ use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\Order\OrderResource;
 use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
+use App\Models\Reservation;
+use App\Http\Resources\Reservation\ReservationResource;
 use App\Services\OrderService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -29,6 +31,8 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request): JsonResponse
     {
+        $reservation = Reservation::find($request['reservation_id']);
+
         try {
             $userData = $request->validated();
             $userData['user_id'] = auth()->user()->id;
@@ -41,6 +45,7 @@ class OrderController extends Controller
 
         return response()->json([
             'order' => new OrderResource($order),
+            'reservation' => new ReservationResource($reservation),
             'payment' => new PaymentResource($payment)
         ], 201);
     }

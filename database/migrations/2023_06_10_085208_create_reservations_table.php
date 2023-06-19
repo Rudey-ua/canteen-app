@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('table_id');
             $table->dateTime('reservation_date');
             $table->string('note')->nullable();
+            $table->enum('status', ['accepted', 'completed'])->default('accepted');
             $table->integer('guests_number');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

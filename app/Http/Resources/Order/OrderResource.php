@@ -21,8 +21,6 @@ class OrderResource extends JsonResource
             "id" => $this->id,
             "order_date" => $this->order_date,
             "status" => $this->status,
-            "user" => new UserResource($this->user),
-            "table" => new TableResource($this->table),
         ];
     }
 }

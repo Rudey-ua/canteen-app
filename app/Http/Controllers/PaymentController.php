@@ -6,6 +6,7 @@ use App\Http\Resources\Payment\PaymentCollection;
 use App\Http\Resources\Payment\PaymentResource;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Reservation;
 use App\Models\Table;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -61,17 +62,20 @@ class PaymentController extends Controller
     public function success(): JsonResponse
     {
         $payment = Payment::where('transaction_id', request()->only('session_id'))->first();
-        $order = Order::where('id', $payment->order_id)->first();
-        $table = Table::where('id', $order->table_id)->first();
+        $payment->payment_status = 'completed';
+        $payment->save();
 
+        $order = Order::where('id', $payment->order_id)->first();
         $order->status = 'paid';
         $order->save();
 
+        $reservation = Reservation::where('id', $order->reservation_id)->first();
+        $reservation->status = 'completed';
+        $reservation->save();
+
+        $table = Table::where('id', $reservation->table_id)->first();
         $table->status = 'free';
         $table->save();
-
-        $payment->payment_status = 'completed';
-        $payment->save();
 
         return response()->json(['payment' => new PaymentResource($payment)], 200);
     }

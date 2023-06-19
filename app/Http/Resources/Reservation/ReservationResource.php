@@ -21,6 +21,7 @@ class ReservationResource extends JsonResource
             "id" => $this->id,
             "user" => new UserResource($this->user),
             "table" => new TableResource($this->table),
+            "status" => $this->status ?? 'accepted',
             "reservation_date" => $this->reservation_date,
             "note" => $this->note
         ];
