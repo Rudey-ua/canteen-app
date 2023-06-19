@@ -25,6 +25,7 @@ class StoreReservationRequest extends FormRequest
             'table_id' => 'required|exists:tables,id',
             'reservation_date' => 'required|date',
             'note' => 'nullable|string',
+            'guests_number' => 'required|integer|min:1',
         ];
     }
 }
