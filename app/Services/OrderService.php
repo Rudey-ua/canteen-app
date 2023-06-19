@@ -39,18 +39,6 @@ class OrderService
         });
     }
 
-    private static function reserveTableForUser(Table $table, $userId): void
-    {
-        $table->status = 'ordered';
-        $table->save();
-
-        Reservation::create([
-            'user_id' => $userId,
-            'table_id' => $table->id,
-            'reservation_date' => now()
-        ]);
-    }
-
     private static function createOrderRecord(array $validated): Order
     {
         return Order::create([
@@ -58,6 +46,13 @@ class OrderService
             'status' => 'ordered',
             'order_date' => now()
         ]);
+    }
+
+    public static function assertOrderDoesNotExist(int $reservationId): void
+    {
+        if (Order::where('reservation_id', $reservationId)->exists()) {
+            throw new Exception('An order for this reservation already exists.');
+        }
     }
 
     private static function addDishesToOrder(Order $order, array $dishes): float

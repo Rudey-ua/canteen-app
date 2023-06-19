@@ -37,6 +37,7 @@ class OrderController extends Controller
             $userData = $request->validated();
             $userData['user_id'] = auth()->user()->id;
 
+            OrderService::assertOrderDoesNotExist($reservation->id);
             $order = OrderService::createOrder($userData);
             $payment = OrderService::createPayment($order, $userData);
         } catch (Exception $e) {
@@ -49,7 +50,6 @@ class OrderController extends Controller
             'payment' => new PaymentResource($payment)
         ], 201);
     }
-
 
     public function destroy(Order $order): JsonResponse
     {
