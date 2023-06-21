@@ -8,6 +8,7 @@ use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
 use App\Models\Reservation;
 use App\Http\Resources\Reservation\ReservationResource;
+use App\Models\Table;
 use App\Services\OrderService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -31,12 +32,20 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request): JsonResponse
     {
+        //TODO: make booking without reservation
+        /*if(!isset($request['reservation_id'])) {
+            $freeTable = Table::where('status', 'free')->inRandomOrder()->first();
+
+            $reservation = Reservation::create([
+                "table_id" => $freeTable->id,
+                "reservation_date" => now(),
+                "note" => null,
+                "guests_number" => null,
+                "user_id" => null
+            ]);
+        }*/
+
         $reservation = Reservation::find($request['reservation_id']);
-
-        //TODO: make implementation if user don`t create reservation
-        if(isset($request['reservation_id'])) {
-
-        }
 
         try {
             $userData = $request->validated();

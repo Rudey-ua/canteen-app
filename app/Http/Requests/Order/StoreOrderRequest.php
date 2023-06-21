@@ -22,7 +22,7 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'reservation_id' => 'sometimes|exists:reservations,id',
+            'reservation_id' => 'required|exists:reservations,id',
             'dishes' => 'required|array',
             'payment_method' => 'required|string',
             'dishes.*.id' => 'required|exists:dishes,id',
