@@ -8,6 +8,7 @@ use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
 use App\Models\Reservation;
 use App\Http\Resources\Reservation\ReservationResource;
+use App\Models\Table;
 use App\Services\OrderService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -33,6 +34,9 @@ class OrderController extends Controller
     {
         $order = OrderService::createOrder($request->validated());
         $payment = OrderService::createPayment($order, $request->validated());
+
+        $table = Table::findOrFail($request->validated()['table_id']);
+        $table->update(['status' => 'reserved']);
 
         return response()->json([
             'order' => new OrderResource($order),

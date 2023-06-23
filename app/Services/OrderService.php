@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Dish;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Table;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
