@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('reservation_requests', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone_number');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('restaurant_id');
             $table->integer('seats_number');
             $table->string('wishes')->nullable();
@@ -22,6 +21,7 @@ return new class extends Migration
             $table->dateTime('requested_for_date');
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('restaurant_id')->references('id')->on('restaurants')->onDelete('cascade');
         });
     }
