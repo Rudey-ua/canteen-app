@@ -5,9 +5,6 @@ namespace App\Services;
 use App\Models\Dish;
 use App\Models\Order;
 use App\Models\Payment;
-use App\Models\Reservation;
-use App\Models\Table;
-use Exception;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -16,20 +13,12 @@ class OrderService
     {
         return DB::transaction(function () use ($validated) {
 
-            /*$table = Table::find($validated['table_id']);
-            // If the table is reserved, validate that the reservation is made by the same user
-            if ($table->status == 'reserved') {
-                $reservation = Reservation::where('table_id', $table->id)->latest()->first();
+            $order = Order::create([
+                'table_id' => $validated['table_id'],
+                'status' => 'ordered',
+                'order_date' => now()
+            ]);
 
-                if ($reservation && $reservation->user_id != $validated['user_id']) {
-                    throw new Exception("The table is reserved by another user");
-                }
-            } else {
-                // If the table is not reserved, reserve it for this user
-                self::reserveTableForUser($table, $validated['user_id']);
-            }*/
-
-            $order = self::createOrderRecord($validated);
             $totalAmount = self::addDishesToOrder($order, $validated['dishes']);
 
             $order->total_amount = $totalAmount;
@@ -37,22 +26,6 @@ class OrderService
 
             return $order;
         });
-    }
-
-    private static function createOrderRecord(array $validated): Order
-    {
-        return Order::create([
-            'reservation_id' => $validated['reservation_id'],
-            'status' => 'ordered',
-            'order_date' => now()
-        ]);
-    }
-
-    public static function assertOrderDoesNotExist(int $reservationId): void
-    {
-        if (Order::where('reservation_id', $reservationId)->exists()) {
-            throw new Exception('An order for this reservation already exists.');
-        }
     }
 
     private static function addDishesToOrder(Order $order, array $dishes): float

@@ -8,7 +8,6 @@ use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
 use App\Models\Reservation;
 use App\Http\Resources\Reservation\ReservationResource;
-use App\Models\Table;
 use App\Services\OrderService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -32,32 +31,17 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request): JsonResponse
     {
-        $reservation = Reservation::find($request['reservation_id']);
-
-        try {
-            $userData = $request->validated();
-            $userData['user_id'] = auth()->user()->id;
-
-            OrderService::assertOrderDoesNotExist($reservation->id);
-            $order = OrderService::createOrder($userData);
-            $payment = OrderService::createPayment($order, $userData);
-        } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
-        }
+        $order = OrderService::createOrder($request->validated());
+        $payment = OrderService::createPayment($order, $request->validated());
 
         return response()->json([
             'order' => new OrderResource($order),
-            'reservation' => new ReservationResource($reservation),
             'payment' => new PaymentResource($payment)
         ], 201);
     }
 
     public function destroy(Order $order): JsonResponse
     {
-        $table = $order->table;
-        $table->status = 'free';
-        $table->save();
-
         $order->delete();
         return response()->json(null, 204);
     }

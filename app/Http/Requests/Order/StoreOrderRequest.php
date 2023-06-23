@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Order;
 
+use App\Rules\DishesBelongToSameRestaurant;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreOrderRequest extends FormRequest
@@ -22,10 +23,10 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'reservation_id' => 'required|exists:reservations,id',
-            'dishes' => 'required|array',
+            'table_id' => 'required|exists:tables,id',
+            'dishes' => ['required', 'array', new DishesBelongToSameRestaurant],
             'payment_method' => 'required|string',
-            'dishes.*.id' => 'required|exists:dishes,id',
+            'dishes.*.id' => 'required',
             'dishes.*.quantity' => 'required|integer|min:1'
         ];
     }
