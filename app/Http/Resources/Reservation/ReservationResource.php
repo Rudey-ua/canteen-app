@@ -19,11 +19,12 @@ class ReservationResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "user" => new UserResource($this->user),
-            "table" => new TableResource($this->table),
-            "status" => $this->status ?? 'accepted',
-            "reservation_date" => $this->reservation_date,
-            "note" => $this->note
+            "name" => $this->name,
+            "phone_number" => $this->phone_number,
+            "restaurant" => new RestaurantResource($this->restaurant),
+            "seats_number" => $this->seats_number,
+            "wishes" => $this->wishes,
+            "requested_for_date" => $this->requested_for_date
         ];
     }
 }

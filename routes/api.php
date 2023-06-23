@@ -73,10 +73,10 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 Route::get('/reservations', [ReservationController::class, 'index']);
 Route::get('/reservations/{reservation}', [ReservationController::class, 'show']);
+Route::post('/reservations', [ReservationController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/reservations', [ReservationController::class, 'store']);
-    Route::put('/reservations/{id}', [ReservationController::class, 'update']);
+    Route::put('/reservations/{reservation}', [ReservationController::class, 'update']);
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy']);
 });
 

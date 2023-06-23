@@ -22,10 +22,12 @@ class UpdateReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'sometimes|exists:users,id',
-            'table_id' => 'required|exists:tables,id',
-            'reservation_date' => 'sometimes|date',
-            'note' => 'sometimes|string',
+            'name' => 'sometimes|string|max:255',
+            'phone_number' => 'sometimes|string|max:15',
+            'restaurant_id' => 'sometimes|integer|exists:restaurants,id',
+            'seats_number' => 'sometimes|integer',
+            'wishes' => 'sometimes|string|max:255',
+            'requested_for_date' => 'sometimes|date|after_or_equal:today',
         ];
     }
 }

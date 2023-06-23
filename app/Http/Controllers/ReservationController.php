@@ -7,6 +7,7 @@ use App\Http\Requests\Reservation\UpdateReservationRequest;
 use App\Http\Resources\Reservation\ReservationResource;
 use App\Http\Resources\Reservation\ReservationCollection;
 use App\Models\Reservation;
+use App\Models\ReservationRequest;
 use App\Models\Table;
 use Illuminate\Http\JsonResponse;
 
@@ -14,61 +15,34 @@ class ReservationController extends Controller
 {
     public function index(): JsonResponse
     {
-        $reservation = Reservation::all();
+        $reservation = ReservationRequest::all();
 
         return response()->json([
             "reservations" => new ReservationCollection($reservation)
         ]);
     }
 
-    public function show(Reservation $reservation): JsonResponse
+    public function show(ReservationRequest $reservation): JsonResponse
     {
         return response()->json( new ReservationResource($reservation));
     }
 
     public function store(StoreReservationRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $data['user_id'] = auth()->user()->id;
+        $reservationRequest = ReservationRequest::create($request->validated());
 
-        $table = Table::findOrFail($data['table_id']);
+        return response()->json(new ReservationResource($reservationRequest), 201);
+    }
 
-        if ($table->status === 'reserved') {
-            return response()->json(['error' => 'Table already have been booked.'], 400);
-        }
-
-        $reservation = Reservation::create($data);
-        $table = $reservation->table;
-        $table->status = 'reserved';
-        $table->save();
+    public function update(UpdateReservationRequest $request, ReservationRequest $reservation): JsonResponse
+    {
+        $reservation->update($request->validated());
 
         return response()->json(new ReservationResource($reservation));
     }
 
-    public function update(UpdateReservationRequest $request, $id): JsonResponse
+    public function destroy(ReservationRequest $reservation): JsonResponse
     {
-        //TODO: скорее всего я не смогу обновить поля резервации если передам тот же самый id который был при создании бронирования
-        $reservation = Reservation::findOrFail($id);
-        $newTableId = $request->validated()['table_id'];
-        $newTable = Table::findOrFail($newTableId);
-
-        if ($newTable->status === 'reserved') {
-            return response()->json(['error' => 'Table has already been booked.'], 400);
-        }
-
-        $reservation->table->update(['status' => 'free']);
-        $newTable->update(['status' => 'reserved']);
-        $reservation->update($request->validated() + ['table_id' => $newTableId]);
-
-        return response()->json(new ReservationResource($reservation));
-    }
-
-    public function destroy(Reservation $reservation): JsonResponse
-    {
-        $table = $reservation->table;
-        $table->status = 'free';
-        $table->save();
-
         $reservation->delete();
         return response()->json(null, 204);
     }
