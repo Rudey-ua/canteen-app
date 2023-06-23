@@ -24,7 +24,9 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'table_id' => ['required', 'exists:tables,id', new TableIsNotReserved],
+            'total_amount' => 'nullable|numeric',
+            'table_id' => ['required_without:reservation_id', 'exists:tables,id', new TableIsNotReserved],
+            'reservation_id' => ['required_without:table_id', 'exists:reservations,id'],
             'dishes' => ['required', 'array', new DishesBelongToSameRestaurant],
             'payment_method' => 'required|string',
             'dishes.*.id' => 'required',
