@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources\Dish;
 
-use App\Http\Resources\Category\Category;
-use App\Http\Resources\Restaurant\Restaurant;
+use App\Http\Resources\Category\CategoryResource;
+use App\Http\Resources\Restaurant\RestaurantResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Dish extends JsonResource
+class DishResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,10 +20,10 @@ class Dish extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "price" => $this->price,
-            "category" => new Category($this->category),
+            "category" => new CategoryResource($this->category),
             "ingredients" => $this->ingredients,
             "recipe" => $this->recipe,
-            "restaurant" => new Restaurant($this->restaurant)
+            "restaurant" => new RestaurantResource($this->restaurant)
         ];
     }
 }

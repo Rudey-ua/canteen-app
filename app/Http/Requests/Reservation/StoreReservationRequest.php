@@ -22,10 +22,10 @@ class StoreReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'table_id' => 'required|exists:tables,id',
             'reservation_date' => 'required|date',
             'note' => 'nullable|string',
+            'guests_number' => 'required|integer|min:1',
         ];
     }
 }

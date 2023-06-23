@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Reservation\StoreReservationRequest;
 use App\Http\Requests\Reservation\UpdateReservationRequest;
-use App\Http\Resources\Reservation\Reservation as ReservationResource;
+use App\Http\Resources\Reservation\ReservationResource;
 use App\Http\Resources\Reservation\ReservationCollection;
 use App\Models\Reservation;
 use App\Models\Table;
@@ -28,13 +28,16 @@ class ReservationController extends Controller
 
     public function store(StoreReservationRequest $request): JsonResponse
     {
-        $table = Table::findOrFail($request->validated()['table_id']);
+        $data = $request->validated();
+        $data['user_id'] = auth()->user()->id;
+
+        $table = Table::findOrFail($data['table_id']);
 
         if ($table->status === 'reserved') {
             return response()->json(['error' => 'Table already have been booked.'], 400);
         }
 
-        $reservation = Reservation::create($request->validated());
+        $reservation = Reservation::create($data);
         $table = $reservation->table;
         $table->status = 'reserved';
         $table->save();

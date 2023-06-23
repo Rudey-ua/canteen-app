@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources\Table;
 
-use App\Http\Resources\Restaurant\Restaurant;
+use App\Http\Resources\Restaurant\RestaurantResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Table extends JsonResource
+class TableResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,7 +19,7 @@ class Table extends JsonResource
             "id" => $this->id,
             "number" => $this->number,
             "capacity" => $this->capacity,
-            "restaurant" => new Restaurant($this->restaurant),
+            "restaurant" => new RestaurantResource($this->restaurant),
             "status" => $this->status ?? "free",
         ];
     }

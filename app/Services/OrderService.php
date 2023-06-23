@@ -15,8 +15,8 @@ class OrderService
    public static function createOrder(array $validated): Order
     {
         return DB::transaction(function () use ($validated) {
-            $table = Table::find($validated['table_id']);
 
+            /*$table = Table::find($validated['table_id']);
             // If the table is reserved, validate that the reservation is made by the same user
             if ($table->status == 'reserved') {
                 $reservation = Reservation::where('table_id', $table->id)->latest()->first();
@@ -27,7 +27,7 @@ class OrderService
             } else {
                 // If the table is not reserved, reserve it for this user
                 self::reserveTableForUser($table, $validated['user_id']);
-            }
+            }*/
 
             $order = self::createOrderRecord($validated);
             $totalAmount = self::addDishesToOrder($order, $validated['dishes']);
@@ -39,26 +39,20 @@ class OrderService
         });
     }
 
-    private static function reserveTableForUser(Table $table, $userId): void
-    {
-        $table->status = 'ordered';
-        $table->save();
-
-        Reservation::create([
-            'user_id' => $userId,
-            'table_id' => $table->id,
-            'reservation_date' => now()
-        ]);
-    }
-
     private static function createOrderRecord(array $validated): Order
     {
         return Order::create([
-            'user_id' => $validated['user_id'],
-            'table_id' => $validated['table_id'],
+            'reservation_id' => $validated['reservation_id'],
             'status' => 'ordered',
             'order_date' => now()
         ]);
+    }
+
+    public static function assertOrderDoesNotExist(int $reservationId): void
+    {
+        if (Order::where('reservation_id', $reservationId)->exists()) {
+            throw new Exception('An order for this reservation already exists.');
+        }
     }
 
     private static function addDishesToOrder(Order $order, array $dishes): float

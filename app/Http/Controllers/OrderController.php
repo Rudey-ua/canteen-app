@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Order\StoreOrderRequest;
-use App\Http\Resources\Order\Order as OrderResource;
+use App\Http\Resources\Order\OrderResource;
 use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
+use App\Models\Reservation;
+use App\Http\Resources\Reservation\ReservationResource;
+use App\Models\Table;
 use App\Services\OrderService;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\Payment\Payment as PaymentResource;
+use App\Http\Resources\Payment\PaymentResource as PaymentResource;
 
 class OrderController extends Controller
 {
@@ -29,15 +32,22 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request): JsonResponse
     {
+        $reservation = Reservation::find($request['reservation_id']);
+
         try {
-            $order = OrderService::createOrder($request->validated());
-            $payment = OrderService::createPayment($order, $request->validated());
+            $userData = $request->validated();
+            $userData['user_id'] = auth()->user()->id;
+
+            OrderService::assertOrderDoesNotExist($reservation->id);
+            $order = OrderService::createOrder($userData);
+            $payment = OrderService::createPayment($order, $userData);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }
 
         return response()->json([
             'order' => new OrderResource($order),
+            'reservation' => new ReservationResource($reservation),
             'payment' => new PaymentResource($payment)
         ], 201);
     }
