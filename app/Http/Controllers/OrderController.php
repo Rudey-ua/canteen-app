@@ -6,11 +6,10 @@ use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\Order\OrderResource;
 use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
-use App\Models\Reservation;
-use App\Http\Resources\Reservation\ReservationResource;
+/*use App\Models\Reservation;
+use App\Http\Resources\Reservation\ReservationResource;*/
 use App\Models\Table;
 use App\Services\OrderService;
-use Exception;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\Payment\PaymentResource as PaymentResource;
 

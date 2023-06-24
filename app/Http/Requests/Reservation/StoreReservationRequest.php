@@ -22,25 +22,26 @@ class StoreReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:15',
-            'restaurant_id' => 'required|integer|exists:restaurants,id',
+            'user_id' => 'required|exists:users,id',
+            'restaurant_id' => 'required|exists:restaurants,id',
             'seats_number' => 'required|integer',
-            'wishes' => 'nullable|string|max:255',
-            'requested_for_date' => 'required|date|after_or_equal:today',
+            'wishes' => 'nullable|string',
+            'requested_for_date' => 'required|date',
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'A name is required',
-            'phone_number.required' => 'A phone number is required',
-            'restaurant_id.required' => 'A restaurant id is required',
-            'seats_number.required' => 'The number of seats is required',
-            'status.required' => 'A status is required',
-            'requested_for_date.required' => 'The date is required',
-            'requested_for_date.after_or_equal' => 'The date must be today or later',
+            'user_id.required' => 'The user field is required.',
+            'user_id.exists' => 'The selected user is invalid.',
+            'restaurant_id.required' => 'The restaurant field is required.',
+            'restaurant_id.exists' => 'The selected restaurant is invalid.',
+            'seats_number.required' => 'The seats number field is required.',
+            'seats_number.integer' => 'The seats number must be an integer.',
+            'wishes.string' => 'The wishes field must be a string.',
+            'requested_for_date.required' => 'The requested for date field is required.',
+            'requested_for_date.date' => 'The requested for date must be a valid date.',
         ];
     }
 }

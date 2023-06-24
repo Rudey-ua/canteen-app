@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingRequestController;
 use App\Http\Controllers\PaymentController;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Route;
@@ -69,16 +70,25 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::delete('/tables/{table}', [TableController::class, 'destroy']);
 });
 
+/*Requests for booking*/
+
+Route::get('/requests', [BookingRequestController::class, 'index']);
+Route::get('/requests/{request}', [BookingRequestController::class, 'show']);
+Route::post('/requests', [BookingRequestController::class, 'store']);
+Route::put('/requests/{request}', [BookingRequestController::class, 'update']);
+Route::delete('/requests/{request}', [BookingRequestController::class, 'destroy']);
+
 /*Reservations*/
 
-Route::get('/reservations', [ReservationController::class, 'index']);
-Route::get('/reservations/{reservation}', [ReservationController::class, 'show']);
-Route::post('/reservations', [ReservationController::class, 'store']);
+/*Route::get('/reservations', [ReservationController::class, 'index']);
+  Route::get('/reservations/{reservation}', [ReservationController::class, 'show']);
+  Route::post('/reservations', [ReservationController::class, 'store']);
 
-Route::middleware('auth:sanctum')->group(function () {
+  Route::middleware('auth:sanctum')->group(function () {
     Route::put('/reservations/{reservation}', [ReservationController::class, 'update']);
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy']);
-});
+});*/
+
 
 /*Orders*/
 
