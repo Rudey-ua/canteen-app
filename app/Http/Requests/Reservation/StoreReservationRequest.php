@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Reservation;
 
+use App\Rules\TableIsNotReserved;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReservationRequest extends FormRequest
@@ -22,8 +23,9 @@ class StoreReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'table_id' => 'required|exists:tables,id',
+            'table_id' => ['required', 'exists:tables,id', new TableIsNotReserved],
             'reservation_requests_id' => 'required|exists:reservation_requests,id',
         ];
+
     }
 }
