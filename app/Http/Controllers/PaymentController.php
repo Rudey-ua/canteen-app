@@ -69,9 +69,20 @@ class PaymentController extends Controller
         $order->status = 'paid';
         $order->save();
 
-        $table = Table::findOrFail($order->table_id);
-        $table->status = 'free';
-        $table->save();
+        if (isset($order['table_id']))
+        {
+            $table = Table::findOrFail($order->table_id);
+            $table->status = 'free';
+            $table->save();
+        }
+
+        if (isset($order['reservation_id']))
+        {
+            $reservation = Reservation::findOrFail($order->reservation_id);
+            $table = Table::findOrFail($reservation->table_id);
+            $table->status = 'free';
+            $table->save();
+        }
 
         return response()->json(['payment' => new PaymentResource($payment)], 200);
     }

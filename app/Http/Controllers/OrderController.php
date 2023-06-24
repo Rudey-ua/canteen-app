@@ -32,8 +32,11 @@ class OrderController extends Controller
         $order = OrderService::createOrder($request->validated());
         $payment = OrderService::createPayment($order, $request->validated());
 
-        $table = Table::findOrFail($request->validated()['table_id']);
-        $table->update(['status' => 'reserved']);
+        if (isset($request->validated()['table_id']))
+        {
+            $table = Table::findOrFail($request->validated()['table_id']);
+            $table->update(['status' => 'reserved']);
+        }
 
         return response()->json([
             'order' => new OrderResource($order),

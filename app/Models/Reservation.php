@@ -11,4 +11,6 @@ class Reservation extends Model
 
     protected $guarded = false;
     protected $table = 'reservations';
+
+
 }

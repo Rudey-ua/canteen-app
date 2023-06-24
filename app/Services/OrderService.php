@@ -5,20 +5,25 @@ namespace App\Services;
 use App\Models\Dish;
 use App\Models\Order;
 use App\Models\Payment;
-use App\Models\Table;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
-   public static function createOrder(array $validated): Order
+    public static function createOrder(array $validated): Order
     {
         return DB::transaction(function () use ($validated) {
 
-            $order = Order::create([
-                'table_id' => $validated['table_id'],
-                'status' => 'ordered',
-                'order_date' => now()
-            ]);
+            $order = null;
+
+            if (isset($validated['table_id']))
+            {
+                $order = self::orderWithoutReservation($validated);
+            }
+
+            if (isset($validated['reservation_id']))
+            {
+                $order = self::orderWithReservation($validated);
+            }
 
             $totalAmount = self::addDishesToOrder($order, $validated['dishes']);
 
@@ -27,6 +32,24 @@ class OrderService
 
             return $order;
         });
+    }
+
+    private static function orderWithoutReservation($data)
+    {
+        return Order::create([
+            'table_id' => $data['table_id'],
+            'status' => 'ordered',
+            'order_date' => now()
+        ]);
+    }
+
+    private static function orderWithReservation($data)
+    {
+        return Order::create([
+            'reservation_id' => $data['reservation_id'],
+            'status' => 'ordered',
+            'order_date' => now()
+        ]);
     }
 
     private static function addDishesToOrder(Order $order, array $dishes): float
