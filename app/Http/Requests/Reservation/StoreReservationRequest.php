@@ -22,7 +22,8 @@ class StoreReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'table_id' => 'required|exists:tables,id',
+            'reservation_requests_id' => 'required|exists:reservation_requests,id',
         ];
     }
 }
