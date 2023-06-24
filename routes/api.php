@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\BookingRequestController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\PaymentController;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Route;
@@ -72,13 +72,13 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 /*Requests for booking*/
 
-Route::get('/requests', [BookingRequestController::class, 'index']);
-Route::get('/requests/{request}', [BookingRequestController::class, 'show']);
+Route::get('/requests', [RequestController::class, 'index']);
+Route::get('/requests/{request}', [RequestController::class, 'show']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/requests', [BookingRequestController::class, 'store']);
-    Route::put('/requests/{request}', [BookingRequestController::class, 'update']);
-    Route::delete('/requests/{request}', [BookingRequestController::class, 'destroy']);
+    Route::post('/requests', [RequestController::class, 'store']);
+    Route::put('/requests/{request}', [RequestController::class, 'update']);
+    Route::delete('/requests/{request}', [RequestController::class, 'destroy']);
 });
 
 /*Reservations*/

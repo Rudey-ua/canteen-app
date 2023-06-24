@@ -10,14 +10,14 @@ use App\Models\ReservationRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
-class BookingRequestController extends Controller
+class RequestController extends Controller
 {
     public function index(): JsonResponse
     {
         $reservation = ReservationRequest::all();
 
         return response()->json([
-            "reservations" => new ReservationCollection($reservation)
+            "requests" => new ReservationCollection($reservation)
         ]);
     }
 
