@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ReservationRequest extends Model
+class Request extends Model
 {
     use HasFactory;
 
     protected $guarded = false;
+    protected $table = 'reservation_requests';
 
     public function restaurant()
     {
