@@ -22,7 +22,6 @@ class StoreReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'restaurant_id' => 'required|exists:restaurants,id',
             'seats_number' => 'required|integer',
             'wishes' => 'nullable|string',
@@ -33,8 +32,6 @@ class StoreReservationRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_id.required' => 'The user field is required.',
-            'user_id.exists' => 'The selected user is invalid.',
             'restaurant_id.required' => 'The restaurant field is required.',
             'restaurant_id.exists' => 'The selected restaurant is invalid.',
             'seats_number.required' => 'The seats number field is required.',

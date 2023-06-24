@@ -22,8 +22,6 @@ class UpdateReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string|max:255',
-            'phone_number' => 'sometimes|string|max:15',
             'restaurant_id' => 'sometimes|integer|exists:restaurants,id',
             'seats_number' => 'sometimes|integer',
             'wishes' => 'sometimes|string|max:255',

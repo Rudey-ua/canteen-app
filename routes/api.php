@@ -74,9 +74,12 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 Route::get('/requests', [BookingRequestController::class, 'index']);
 Route::get('/requests/{request}', [BookingRequestController::class, 'show']);
-Route::post('/requests', [BookingRequestController::class, 'store']);
-Route::put('/requests/{request}', [BookingRequestController::class, 'update']);
-Route::delete('/requests/{request}', [BookingRequestController::class, 'destroy']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/requests', [BookingRequestController::class, 'store']);
+    Route::put('/requests/{request}', [BookingRequestController::class, 'update']);
+    Route::delete('/requests/{request}', [BookingRequestController::class, 'destroy']);
+});
 
 /*Reservations*/
 
