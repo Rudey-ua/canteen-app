@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Reservation\StoreReservationRequest;
-use App\Http\Requests\Reservation\UpdateReservationRequest;
+use App\Http\Requests\Request\StoreRequest;
+use App\Http\Requests\Request\UpdateRequest;
 use App\Http\Resources\Reservation\ReservationCollection;
 use App\Http\Resources\Reservation\ReservationResource;
 use App\Models\ReservationRequest;
@@ -26,7 +26,7 @@ class BookingRequestController extends Controller
         return response()->json( new ReservationResource($request));
     }
 
-    public function store(StoreReservationRequest $request): JsonResponse
+    public function store(StoreRequest $request): JsonResponse
     {
         $data = $request->validated();
         $data['user_id'] = Auth::user()->getAuthIdentifier();
@@ -36,7 +36,7 @@ class BookingRequestController extends Controller
         return response()->json(new ReservationResource($reservationRequest), 201);
     }
 
-    public function update(UpdateReservationRequest $updateRequest, ReservationRequest $request): JsonResponse
+    public function update(UpdateRequest $updateRequest, ReservationRequest $request): JsonResponse
     {
         $request->update($updateRequest->validated());
 
