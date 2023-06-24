@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Request\StoreRequest;
 use App\Http\Requests\Request\UpdateRequest;
-use App\Http\Resources\Reservation\ReservationCollection;
-use App\Http\Resources\Reservation\ReservationResource;
+use App\Http\Resources\Request\RequestCollection;
+use App\Http\Resources\Request\RequestResource;
 use App\Models\ReservationRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -17,13 +17,13 @@ class RequestController extends Controller
         $reservation = ReservationRequest::all();
 
         return response()->json([
-            "requests" => new ReservationCollection($reservation)
+            "requests" => new RequestCollection($reservation)
         ]);
     }
 
     public function show(ReservationRequest $request): JsonResponse
     {
-        return response()->json( new ReservationResource($request));
+        return response()->json( new RequestResource($request));
     }
 
     public function store(StoreRequest $request): JsonResponse
@@ -33,14 +33,14 @@ class RequestController extends Controller
 
         $reservationRequest = ReservationRequest::create($data);
 
-        return response()->json(new ReservationResource($reservationRequest), 201);
+        return response()->json(new RequestResource($reservationRequest), 201);
     }
 
     public function update(UpdateRequest $updateRequest, ReservationRequest $request): JsonResponse
     {
         $request->update($updateRequest->validated());
 
-        return response()->json(new ReservationResource($request));
+        return response()->json(new RequestResource($request));
     }
 
     public function destroy(ReservationRequest $request): JsonResponse

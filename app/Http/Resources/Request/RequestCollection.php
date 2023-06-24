@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Reservation;
+namespace App\Http\Resources\Request;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ReservationCollection extends ResourceCollection
+class RequestCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.

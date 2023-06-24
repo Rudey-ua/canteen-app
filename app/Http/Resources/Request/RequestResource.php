@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Resources\Reservation;
+namespace App\Http\Resources\Request;
 
 use App\Http\Resources\Restaurant\RestaurantResource;
 use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ReservationResource extends JsonResource
+class RequestResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
