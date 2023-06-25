@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Reservation;
+namespace App\Http\Requests\Request;
 
-use App\Rules\TableIsNotReserved;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreReservationRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +22,10 @@ class StoreReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'table_id' => ['required', 'exists:tables,id', new TableIsNotReserved],
-            'reservation_requests_id' => 'required|exists:reservation_requests,id',
+            'restaurant_id' => 'sometimes|integer|exists:restaurants,id',
+            'seats_number' => 'sometimes|integer',
+            'wishes' => 'sometimes|string|max:255',
+            'requested_for_date' => 'sometimes|date|after_or_equal:today',
         ];
-
     }
 }

@@ -5,18 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Table extends Model
+class Request extends Model
 {
     use HasFactory;
+
     protected $guarded = false;
+    protected $table = 'reservation_requests';
 
     public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
     }
 
-    public function reservation()
+    public function user()
     {
-        return $this->hasOne(Reservation::class);
+        return $this->belongsTo(User::class);
     }
 }

@@ -2,9 +2,6 @@
 
 namespace App\Http\Resources\Reservation;
 
-use App\Http\Resources\Restaurant\RestaurantResource;
-use App\Http\Resources\Table\TableResource;
-use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,12 +15,10 @@ class ReservationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
-            "user" => new UserResource($this->user),
-            "table" => new TableResource($this->table),
-            "status" => $this->status ?? 'accepted',
-            "reservation_date" => $this->reservation_date,
-            "note" => $this->note
+            'id' => $this->id,
+            'table_id' => $this->table_id,
+            'reservation_requests_id' => $this->reservation_requests_id,
+            'created_at' => $this->created_at,
         ];
     }
 }

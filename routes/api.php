@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\PaymentController;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Route;
@@ -69,14 +70,25 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::delete('/tables/{table}', [TableController::class, 'destroy']);
 });
 
+/*Requests for booking*/
+
+Route::get('/requests', [RequestController::class, 'index']);
+Route::get('/requests/{request}', [RequestController::class, 'show']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/requests', [RequestController::class, 'store']);
+    Route::put('/requests/{request}', [RequestController::class, 'update']);
+    Route::delete('/requests/{request}', [RequestController::class, 'destroy']);
+});
+
 /*Reservations*/
 
 Route::get('/reservations', [ReservationController::class, 'index']);
 Route::get('/reservations/{reservation}', [ReservationController::class, 'show']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/reservations', [ReservationController::class, 'store']);
-    Route::put('/reservations/{id}', [ReservationController::class, 'update']);
+    //Route::put('/reservations/{reservation}', [ReservationController::class, 'update']);
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'destroy']);
 });
 
@@ -91,6 +103,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 /*Payments*/
+
+Route::get('/tables/{table}/orders', [OrderController::class, 'payOrderForTable']);
 
 Route::get('/payments', [PaymentController::class, 'index']);
 Route::post('/payments', [PaymentController::class, 'store']);

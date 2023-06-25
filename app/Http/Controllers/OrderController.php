@@ -6,16 +6,19 @@ use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\Order\OrderResource;
 use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
-use App\Models\Reservation;
-use App\Http\Resources\Reservation\ReservationResource;
 use App\Models\Table;
 use App\Services\OrderService;
-use Exception;
+use App\Services\PaymentService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\Payment\PaymentResource as PaymentResource;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function __construct(private PaymentService $paymentService)
+    {
+    }
+
     public function index(): JsonResponse
     {
         $orders = Order::all();
@@ -32,33 +35,38 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request): JsonResponse
     {
-        $reservation = Reservation::find($request['reservation_id']);
+        $order = OrderService::createOrder($request->validated());
+        $payment = OrderService::createPayment($order, $request->validated());
 
-        try {
-            $userData = $request->validated();
-            $userData['user_id'] = auth()->user()->id;
-
-            OrderService::assertOrderDoesNotExist($reservation->id);
-            $order = OrderService::createOrder($userData);
-            $payment = OrderService::createPayment($order, $userData);
-        } catch (Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+        if (isset($request->validated()['table_id']))
+        {
+            $table = Table::findOrFail($request->validated()['table_id']);
+            $table->update(['status' => 'reserved']);
         }
 
         return response()->json([
             'order' => new OrderResource($order),
-            'reservation' => new ReservationResource($reservation),
             'payment' => new PaymentResource($payment)
         ], 201);
     }
 
     public function destroy(Order $order): JsonResponse
     {
-        $table = $order->table;
-        $table->status = 'free';
-        $table->save();
-
         $order->delete();
         return response()->json(null, 204);
+    }
+
+    public function payOrderForTable(Table $table): JsonResponse
+    {
+        $order = $this->paymentService->findOrder($table);
+
+        if(!$order) return $this->paymentService->orderNotFound();
+
+        if($order->status == 'paid') return $this->paymentService->orderAlreadyPaid();
+
+        $request = new Request;
+        $request->replace(['order_id' => $order->id]);
+
+        return response()->json((new PaymentController)->store($request));
     }
 }

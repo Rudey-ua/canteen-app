@@ -18,7 +18,10 @@ return new class extends Migration
             $table->enum('status', ['ordered', 'served', 'paid'])->default('ordered');
             $table->decimal('total_amount', 8, 2)->nullable();
 
-            $table->unsignedBigInteger('reservation_id');
+            $table->unsignedBigInteger('table_id')->nullable();
+            $table->foreign('table_id')->references('id')->on('tables')->onDelete('cascade');
+
+            $table->unsignedBigInteger('reservation_id')->nullable();
             $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('cascade');
 
             $table->timestamps();

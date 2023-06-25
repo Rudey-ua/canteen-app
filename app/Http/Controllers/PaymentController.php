@@ -65,22 +65,29 @@ class PaymentController extends Controller
         $payment->payment_status = 'completed';
         $payment->save();
 
-        $order = Order::where('id', $payment->order_id)->first();
+        $order = Order::findOrFail($payment->order_id);
         $order->status = 'paid';
         $order->save();
 
-        $reservation = Reservation::where('id', $order->reservation_id)->first();
-        $reservation->status = 'completed';
-        $reservation->save();
+        if (isset($order['table_id']))
+        {
+            $table = Table::findOrFail($order->table_id);
+            $table->status = 'free';
+            $table->save();
+        }
 
-        $table = Table::where('id', $reservation->table_id)->first();
-        $table->status = 'free';
-        $table->save();
+        if (isset($order['reservation_id']))
+        {
+            $reservation = Reservation::findOrFail($order->reservation_id);
+            $table = Table::findOrFail($reservation->table_id);
+            $table->status = 'free';
+            $table->save();
+        }
 
         return response()->json(['payment' => new PaymentResource($payment)], 200);
     }
 
-    public function cancel()
+    public function cancel(): JsonResponse
     {
         $stripeSessionId = request()->only('session_id');
 

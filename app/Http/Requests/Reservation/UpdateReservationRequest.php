@@ -22,10 +22,7 @@ class UpdateReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'sometimes|exists:users,id',
-            'table_id' => 'required|exists:tables,id',
-            'reservation_date' => 'sometimes|date',
-            'note' => 'sometimes|string',
+            //
         ];
     }
 }

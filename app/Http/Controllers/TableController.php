@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Table\StoreTableRequest;
 use App\Http\Requests\Table\UpdateTableRequest;
+use App\Http\Resources\Order\OrderResource;
 use App\Http\Resources\Table\TableResource;
 use App\Http\Resources\Table\TableCollection;
+use App\Models\Order;
+use App\Models\Payment;
+use App\Models\Reservation;
 use App\Models\Table;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

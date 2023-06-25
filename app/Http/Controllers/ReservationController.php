@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Reservation\StoreReservationRequest;
-use App\Http\Requests\Reservation\UpdateReservationRequest;
-use App\Http\Resources\Reservation\ReservationResource;
 use App\Http\Resources\Reservation\ReservationCollection;
+use App\Http\Resources\Reservation\ReservationResource;
+use App\Models\Request;
 use App\Models\Reservation;
 use App\Models\Table;
 use Illuminate\Http\JsonResponse;
@@ -14,62 +14,35 @@ class ReservationController extends Controller
 {
     public function index(): JsonResponse
     {
-        $reservation = Reservation::all();
+        $reservations = Reservation::all();
 
         return response()->json([
-            "reservations" => new ReservationCollection($reservation)
+            "reservations" => new ReservationCollection($reservations)
         ]);
     }
 
     public function show(Reservation $reservation): JsonResponse
     {
-        return response()->json( new ReservationResource($reservation));
+        return response()->json(new ReservationResource($reservation));
     }
 
     public function store(StoreReservationRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $data['user_id'] = auth()->user()->id;
+        $reservation = Reservation::create($request->validated());
 
-        $table = Table::findOrFail($data['table_id']);
+        $table = Table::findOrFail($request->validated()['table_id']);
+        $table->update(['status' => 'reserved']);
 
-        if ($table->status === 'reserved') {
-            return response()->json(['error' => 'Table already have been booked.'], 400);
-        }
+        $bookingRequest = Request::findOrFail($request->validated()['reservation_requests_id']);
+        $bookingRequest->update(['status' => 'approved']);
 
-        $reservation = Reservation::create($data);
-        $table = $reservation->table;
-        $table->status = 'reserved';
-        $table->save();
-
-        return response()->json(new ReservationResource($reservation));
-    }
-
-    public function update(UpdateReservationRequest $request, $id): JsonResponse
-    {
-        //TODO: скорее всего я не смогу обновить поля резервации если передам тот же самый id который был при создании бронирования
-        $reservation = Reservation::findOrFail($id);
-        $newTableId = $request->validated()['table_id'];
-        $newTable = Table::findOrFail($newTableId);
-
-        if ($newTable->status === 'reserved') {
-            return response()->json(['error' => 'Table has already been booked.'], 400);
-        }
-
-        $reservation->table->update(['status' => 'free']);
-        $newTable->update(['status' => 'reserved']);
-        $reservation->update($request->validated() + ['table_id' => $newTableId]);
-
-        return response()->json(new ReservationResource($reservation));
+        return response()->json(new ReservationResource($reservation), 201);
     }
 
     public function destroy(Reservation $reservation): JsonResponse
     {
-        $table = $reservation->table;
-        $table->status = 'free';
-        $table->save();
-
         $reservation->delete();
+
         return response()->json(null, 204);
     }
 }

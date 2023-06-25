@@ -13,15 +13,12 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('table_id');
-            $table->dateTime('reservation_date');
-            $table->string('note')->nullable();
-            $table->enum('status', ['accepted', 'completed'])->default('accepted');
-            $table->integer('guests_number')->nullable();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('table_id');
             $table->foreign('table_id')->references('id')->on('tables')->onDelete('cascade');
+
+            $table->unsignedBigInteger('reservation_requests_id');
+            $table->foreign('reservation_requests_id')->references('id')->on('reservation_requests')->onDelete('cascade');
 
             $table->timestamps();
         });
