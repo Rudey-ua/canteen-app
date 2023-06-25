@@ -9,6 +9,7 @@ use App\Http\Resources\Table\TableResource;
 use App\Http\Resources\Table\TableCollection;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Reservation;
 use App\Models\Table;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -56,27 +57,5 @@ class TableController extends Controller
         $table->delete();
 
         return response()->json(null, 204);
-    }
-
-    public function payOrderForTable(Table $table): JsonResponse
-    {
-        $order = Order::where('table_id', $table->id)->first();
-
-        if(!$order) {
-            return response()->json([
-                'message' => 'There are no orders for this table!'
-            ], 404);
-        }
-
-        if($order->status == 'paid') {
-            return response()->json([
-                'message' => 'Order already paid!'
-            ], 400);
-        }
-
-        $request = new Request;
-        $request->replace(['order_id' => $order->id]);
-
-        return response()->json((new PaymentController)->store($request));
     }
 }

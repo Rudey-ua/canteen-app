@@ -64,9 +64,6 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 Route::get('/tables', [TableController::class, 'index']);
 Route::get('/tables/{table}', [TableController::class, 'show']);
 
-
-Route::get('/tables/{table}/orders', [TableController::class, 'payOrderForTable']);
-
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/tables', [TableController::class, 'store']);
     Route::put('/tables/{table}', [TableController::class, 'update']);
@@ -106,6 +103,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 /*Payments*/
+
+Route::get('/tables/{table}/orders', [OrderController::class, 'payOrderForTable']);
 
 Route::get('/payments', [PaymentController::class, 'index']);
 Route::post('/payments', [PaymentController::class, 'store']);
