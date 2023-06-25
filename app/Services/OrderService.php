@@ -15,14 +15,10 @@ class OrderService
 
             $order = null;
 
-            if (isset($validated['table_id']))
-            {
-                $order = self::orderWithoutReservation($validated);
-            }
-
-            if (isset($validated['reservation_id']))
-            {
-                $order = self::orderWithReservation($validated);
+            if (isset($validated['table_id'])) {
+                $order = self::createOrderFromArray(['table_id' => $validated['table_id']]);
+            } else {
+                $order = self::createOrderFromArray(['reservation_id' => $validated['reservation_id']]);
             }
 
             $totalAmount = self::addDishesToOrder($order, $validated['dishes']);
@@ -34,19 +30,10 @@ class OrderService
         });
     }
 
-    private static function orderWithoutReservation($data)
+    private static function createOrderFromArray($data)
     {
         return Order::create([
-            'table_id' => $data['table_id'],
-            'status' => 'ordered',
-            'order_date' => now()
-        ]);
-    }
-
-    private static function orderWithReservation($data)
-    {
-        return Order::create([
-            'reservation_id' => $data['reservation_id'],
+            key($data) => current($data),
             'status' => 'ordered',
             'order_date' => now()
         ]);
