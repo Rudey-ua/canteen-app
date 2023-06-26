@@ -7,7 +7,10 @@ use App\Http\Requests\Dish\UpdateDishRequest;
 use App\Http\Resources\Dish\DishResource;
 use App\Http\Resources\Dish\DishCollection;
 use App\Models\Dish;
+use App\Models\Restaurant;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
 
 class DishController extends Controller
 {
@@ -44,5 +47,14 @@ class DishController extends Controller
         $dish->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function getRestaurantDishes($restaurant_id): JsonResponse
+    {
+        $dish = Dish::where('restaurant_id', $restaurant_id)->get();
+
+        return response()->json([
+            'dishes' => new DishCollection($dish),
+        ]);
     }
 }

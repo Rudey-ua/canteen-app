@@ -41,6 +41,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);
+Route::get('/categories/{category_id}/dishes', [CategoryController::class, 'getCategoryDishes']);
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/categories', [CategoryController::class, 'store']);
@@ -52,6 +53,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 Route::get('/dishes', [DishController::class, 'index']);
 Route::get('/dishes/{dish}', [DishController::class, 'show']);
+Route::get('/restaurants/{restaurant_id}/dishes', [DishController::class, 'getRestaurantDishes']);
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/dishes', [DishController::class, 'store']);

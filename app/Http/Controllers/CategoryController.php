@@ -6,7 +6,9 @@ use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\Category\CategoryCollection;
+use App\Http\Resources\Dish\DishCollection;
 use App\Models\Category;
+use App\Models\Dish;
 use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
@@ -44,5 +46,14 @@ class CategoryController extends Controller
         $category->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function getCategoryDishes($category_id): JsonResponse
+    {
+        $dish = Dish::where('category_id', $category_id)->get();
+
+        return response()->json([
+            'dishes' => new DishCollection($dish),
+        ]);
     }
 }
