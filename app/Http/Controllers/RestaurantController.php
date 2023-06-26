@@ -34,7 +34,7 @@ class RestaurantController extends Controller
     {
         $restaurant = Restaurant::create($request->validated());
 
-        return response()->json(new RestaurantResource($restaurant));
+        return response()->json(new RestaurantResource($restaurant), 201);
     }
 
     public function update(UpdateRestaurantRequest $request, Restaurant $restaurant): JsonResponse
