@@ -48,15 +48,15 @@ class PaymentController extends Controller
             'payment_method_types' => ['card'],
             'line_items' => $line_items,
             'mode' => 'payment',
-            'success_url' => 'http://127.0.0.1:8000/api/success?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => 'http://127.0.0.1:8000/api/cancel',
+            'success_url' => env('APP_URL') . '/api/success?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => env('APP_URL') . '/api/cancel',
         ]);
 
         $payment = $order->payment;
         $payment->transaction_id = $checkout_session->id;
         $payment->save();
 
-        return response()->json(['url' => $checkout_session->url], 200);
+        return response()->json(['url' => $checkout_session->url], 201);
     }
 
     public function success(): JsonResponse
