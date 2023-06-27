@@ -20,11 +20,15 @@ class AuthenticateController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        Mail::to($user->email)->send(new RegisterEmail($user));
+        try {
+            Mail::to($user->email)->send(new RegisterEmail($user));
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to send email: ' . $e->getMessage()], 500);
+        }
 
         return response()->json([
-            "user"  => new UserResource($user),
-            "token"  => $token
+            "user" => new UserResource($user),
+            "token" => $token
         ], 201);
     }
 
@@ -36,7 +40,7 @@ class AuthenticateController extends Controller
             ], 401);
         }
 
-        $user = User::where('email',  $request->email)->firstOrFail();
+        $user = User::where('email', $request->email)->firstOrFail();
 
         auth()->user()->tokens()->delete();
 
