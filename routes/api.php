@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TwilloController;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,8 @@ Route::get('/send-mail', function () {
         'message' => 'Test mail successfully send!'
     ]);
 });
+
+Route::get('/send-sms', [TwilloController::class, 'send']);
 
 /*Restaurants*/
 
