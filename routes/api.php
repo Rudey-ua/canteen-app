@@ -3,6 +3,7 @@
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\PaymentController;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticateController;
 use App\Http\Controllers\RestaurantController;
@@ -25,6 +26,15 @@ use App\Http\Controllers\ReservationController;
 
 Route::post('/register', [AuthenticateController::class, 'register']);
 Route::post('/login', [AuthenticateController::class, 'login']);
+
+Route::get('/send-mail', function () {
+
+    Mail::to('koctenko525@gmail.com')->send(new \App\Mail\TestEmail('Max'));
+
+    return response()->json([
+        'message' => 'Test mail successfully send!'
+    ]);
+});
 
 /*Restaurants*/
 
