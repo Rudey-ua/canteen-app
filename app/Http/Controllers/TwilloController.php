@@ -6,7 +6,7 @@ use App\Services\TwilloService;
 
 class TwilloController extends Controller
 {
-    protected $twilio;
+    protected TwilloService $twilio;
 
     public function __construct(TwilloService $twilio)
     {

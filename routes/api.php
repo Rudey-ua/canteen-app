@@ -29,9 +29,7 @@ Route::post('/register', [AuthenticateController::class, 'register']);
 Route::post('/login', [AuthenticateController::class, 'login']);
 
 Route::get('/send-mail', function () {
-
     Mail::to('koctenko525@gmail.com')->send(new \App\Mail\TestEmail('Max'));
-
     return response()->json([
         'message' => 'Test mail successfully send!'
     ]);
