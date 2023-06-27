@@ -3,6 +3,7 @@
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TwilloController;
+use App\Mail\TestEmail;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -29,13 +30,11 @@ Route::post('/register', [AuthenticateController::class, 'register']);
 Route::post('/login', [AuthenticateController::class, 'login']);
 
 Route::get('/send-mail', function () {
-    Mail::to('koctenko525@gmail.com')->send(new \App\Mail\TestEmail('Max'));
+    Mail::to('koctenko525@gmail.com')->send(new TestEmail('Max'));
     return response()->json([
         'message' => 'Test mail successfully send!'
     ]);
 });
-
-Route::get('/send-sms', [TwilloController::class, 'send']);
 
 /*Restaurants*/
 
