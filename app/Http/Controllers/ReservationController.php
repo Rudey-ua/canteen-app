@@ -60,7 +60,6 @@ class ReservationController extends Controller
                 Log::error('Error while sending SMS:' . $e->getMessage());
             }
         }
-
         return response()->json(new ReservationResource($reservation), 201);
     }
 
