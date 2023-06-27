@@ -18,8 +18,6 @@ class AuthenticateController extends Controller
     {
         $user = User::create($request->validated());
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         try {
             Mail::to($user->email)->send(new RegisterEmail($user));
         } catch (\Exception $e) {
@@ -28,7 +26,7 @@ class AuthenticateController extends Controller
 
         return response()->json([
             "user" => new UserResource($user),
-            "token" => $token
+            "token" => $user->createToken('auth_token')->plainTextToken
         ], 201);
     }
 
@@ -44,11 +42,9 @@ class AuthenticateController extends Controller
 
         auth()->user()->tokens()->delete();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
             'user' => new UserResource($user),
-            'token' => $token
+            'token' => $user->createToken('auth_token')->plainTextToken
         ]);
     }
 }
