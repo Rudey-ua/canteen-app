@@ -3,17 +3,18 @@
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\Reservation;
 use App\Models\Table;
 use Illuminate\Http\JsonResponse;
 
 class PaymentService
 {
-    public function findOrder(Table $table): ?Order
+    public function findOrder(Table $table)
     {
-        $reservation = $table->reservation;
+        $reservation = Reservation::where('table_id', $table->id)->get();
 
         if ($reservation) {
-            return Order::where('reservation_id', $reservation->id)->first();
+            return response()->json('FIX IT!');
         }
         return Order::where('table_id', $table->id)
             ->where('status', '=', 'ordered')->first();
