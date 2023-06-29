@@ -15,7 +15,8 @@ class PaymentService
         if ($reservation) {
             return Order::where('reservation_id', $reservation->id)->first();
         }
-        return Order::where('table_id', $table->id)->first();
+        return Order::where('table_id', $table->id)
+            ->where('status', '=', 'ordered')->first();
     }
 
     public function orderNotFound(): JsonResponse
