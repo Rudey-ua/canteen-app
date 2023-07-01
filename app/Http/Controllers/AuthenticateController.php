@@ -9,7 +9,9 @@ use App\Mail\RegisterEmail;
 use App\Mail\TestEmail;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class AuthenticateController extends Controller
@@ -21,7 +23,7 @@ class AuthenticateController extends Controller
         try {
             Mail::to($user->email)->send(new RegisterEmail($user));
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to send email: ' . $e->getMessage()], 500);
+            Log::error('Error while sending email:' . $e->getMessage());
         }
 
         return response()->json([
@@ -46,5 +48,11 @@ class AuthenticateController extends Controller
             'user' => new UserResource($user),
             'token' => $user->createToken('auth_token')->plainTextToken
         ]);
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }

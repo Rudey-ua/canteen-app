@@ -123,7 +123,3 @@ Route::post('/payments', [PaymentController::class, 'store']);
 
 Route::get('/success', [PaymentController::class, 'success']);
 Route::get('/cancel', [PaymentController::class, 'cancel']);
-
-
-
-
