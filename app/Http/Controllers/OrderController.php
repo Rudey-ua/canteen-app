@@ -6,6 +6,7 @@ use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\Order\OrderResource;
 use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
+use App\Models\Reservation;
 use App\Models\Table;
 use App\Services\OrderService;
 use App\Services\PaymentService;

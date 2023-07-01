@@ -79,6 +79,9 @@ class PaymentController extends Controller
         if (isset($order['reservation_id']))
         {
             $reservation = Reservation::findOrFail($order->reservation_id);
+            $reservation->status = 'paid';
+            $reservation->save();
+
             $table = Table::findOrFail($reservation->table_id);
             $table->status = 'free';
             $table->save();
