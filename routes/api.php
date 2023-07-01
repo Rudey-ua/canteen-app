@@ -1,19 +1,20 @@
 <?php
 
-use App\Http\Controllers\RequestController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\TwilloController;
-use App\Mail\TestEmail;
-use App\Models\Payment;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticateController;
-use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DishController;
-use App\Http\Controllers\TableController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\Stripe\CancelController;
+use App\Http\Controllers\Stripe\SuccessController;
+use App\Http\Controllers\TableController;
+use App\Http\Controllers\TwilloController;
+use App\Mail\TestEmail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,7 +120,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 Route::get('/tables/{table}/orders', [OrderController::class, 'payOrderForTable']);
 
 Route::get('/payments', [PaymentController::class, 'index']);
+Route::get('/payments/{payment}', [PaymentController::class, 'show']);
 Route::post('/payments', [PaymentController::class, 'store']);
 
-Route::get('/success', [PaymentController::class, 'success']);
-Route::get('/cancel', [PaymentController::class, 'cancel']);
+Route::get('/payment/success', SuccessController::class);
+Route::get('/payment/cancel', CancelController::class);
