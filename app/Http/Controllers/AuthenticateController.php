@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class AuthenticateController extends Controller
@@ -22,7 +23,7 @@ class AuthenticateController extends Controller
         try {
             Mail::to($user->email)->send(new RegisterEmail($user));
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to send email: ' . $e->getMessage()], 500);
+            Log::error('Error while sending email:' . $e->getMessage());
         }
 
         return response()->json([
