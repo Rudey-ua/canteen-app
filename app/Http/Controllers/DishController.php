@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\Dish\ByCategory;
 use App\Http\Filters\Dish\ByName;
+use App\Http\Filters\Dish\ByPrice;
 use App\Http\Requests\Dish\StoreDishRequest;
 use App\Http\Requests\Dish\UpdateDishRequest;
 use App\Http\Resources\Dish\DishResource;
@@ -14,10 +15,10 @@ use Illuminate\Support\Facades\Pipeline;
 
 class DishController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $pipelines = [
-            ByName::class, ByCategory::class
+            ByName::class, ByCategory::class, ByPrice::class
         ];
 
         $dishes = Pipeline::send(Dish::query())
