@@ -15,7 +15,7 @@ use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
-    public function index()
+    public function index(): JsonResponse
     {
         $payments = Payment::all();
 
@@ -24,7 +24,12 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function show(Payment $payment): JsonResponse
+    {
+        return response()->json(new PaymentResource($payment));
+    }
+
+    public function store(Request $request): JsonResponse
     {
         Stripe::setApiKey(config('services.stripe.secret'));
         $order = Order::with('dishes')->findOrFail($request->input('order_id'));
@@ -48,8 +53,8 @@ class PaymentController extends Controller
             'payment_method_types' => ['card'],
             'line_items' => $line_items,
             'mode' => 'payment',
-            'success_url' => env('APP_URL') . '/api/success?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => env('APP_URL') . '/api/cancel',
+            'success_url' => env('APP_URL') . '/api/payment/success?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => env('APP_URL') . '/payment/cancel',
         ]);
 
         $payment = $order->payment;
@@ -57,49 +62,5 @@ class PaymentController extends Controller
         $payment->save();
 
         return response()->json(['url' => $checkout_session->url], 201);
-    }
-
-    public function success(): JsonResponse
-    {
-        $payment = Payment::where('transaction_id', request()->only('session_id'))->first();
-        $payment->payment_status = 'completed';
-        $payment->save();
-
-        $order = Order::findOrFail($payment->order_id);
-        $order->status = 'paid';
-        $order->save();
-
-        if (isset($order['table_id']))
-        {
-            $table = Table::findOrFail($order->table_id);
-            $table->status = 'free';
-            $table->save();
-        }
-
-        if (isset($order['reservation_id']))
-        {
-            $reservation = Reservation::findOrFail($order->reservation_id);
-            $reservation->status = 'paid';
-            $reservation->save();
-
-            $table = Table::findOrFail($reservation->table_id);
-            $table->status = 'free';
-            $table->save();
-        }
-
-        return response()->json(['payment' => new PaymentResource($payment)], 200);
-    }
-
-    public function cancel(): JsonResponse
-    {
-        $stripeSessionId = request()->only('session_id');
-
-        $payment = Payment::where('transaction_id', $stripeSessionId)->first();
-        $payment->payment_status = "canceled";
-        $payment->save();
-
-        return response()->json([
-            "message" => "Order is cancelled."
-        ], 200);
     }
 }
