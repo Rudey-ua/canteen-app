@@ -18,6 +18,7 @@ class ReservationResource extends JsonResource
             'id' => $this->id,
             'table_id' => $this->table_id,
             'reservation_requests_id' => $this->reservation_requests_id,
+            'status' => $this->status,
             'created_at' => $this->created_at,
         ];
     }

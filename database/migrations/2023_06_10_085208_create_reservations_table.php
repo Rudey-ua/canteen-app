@@ -20,6 +20,8 @@ return new class extends Migration
             $table->unsignedBigInteger('reservation_requests_id');
             $table->foreign('reservation_requests_id')->references('id')->on('reservation_requests')->onDelete('cascade');
 
+            $table->enum('status', ['draft', 'paid'])->default('draft');
+
             $table->timestamps();
         });
     }

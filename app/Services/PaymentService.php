@@ -14,7 +14,8 @@ class PaymentService
         $reservation = Reservation::where('table_id', $table->id)->get();
 
         if ($reservation) {
-            return response()->json('FIX IT!');
+            return Order::where('reservation_id', $reservation->id)
+                ->where('status', '!=', 'paid')->first();
         }
         return Order::where('table_id', $table->id)
             ->where('status', '=', 'ordered')->first();
