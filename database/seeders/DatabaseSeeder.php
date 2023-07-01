@@ -43,6 +43,6 @@ class DatabaseSeeder extends Seeder
 
         Table::factory()->times(2)->create();
 
-        Dish::factory()->count(2)->create();
+        Dish::factory()->count(10)->create();
     }
 }
