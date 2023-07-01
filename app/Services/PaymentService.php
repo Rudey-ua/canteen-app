@@ -11,11 +11,11 @@ class PaymentService
 {
     public function findOrder(Table $table)
     {
-        $reservation = Reservation::where('table_id', $table->id)->get();
+        $reservation = Reservation::where('table_id', $table->id)
+            ->where('status', '!=', 'paid')->first();;
 
         if ($reservation) {
-            return Order::where('reservation_id', $reservation->id)
-                ->where('status', '!=', 'paid')->first();
+            return Order::where('reservation_id', $reservation->id)->first();
         }
         return Order::where('table_id', $table->id)
             ->where('status', '=', 'ordered')->first();
