@@ -109,7 +109,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 Route::get('/orders', [OrderController::class, 'index']);
 Route::get('/orders/{order}', [OrderController::class, 'show']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/orders', [OrderController::class, 'store']);
     Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
 });
