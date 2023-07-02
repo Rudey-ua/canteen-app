@@ -10,11 +10,14 @@ use App\Http\Requests\Dish\UpdateDishRequest;
 use App\Http\Resources\Dish\DishResource;
 use App\Http\Resources\Dish\DishCollection;
 use App\Models\Dish;
+use App\Services\DishService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Pipeline;
 
 class DishController extends Controller
 {
+    public function __construct(protected DishService $dishService){}
+
     public function index(): JsonResponse
     {
         $pipelines = [
@@ -38,7 +41,12 @@ class DishController extends Controller
 
     public function store(StoreDishRequest $request): JsonResponse
     {
-        $dish = Dish::create($request->validated());
+        $data = $request->except('images');
+        $dish = Dish::create($data);
+
+        if ($request->hasFile('images')) {
+            $this->dishService->saveImages($dish, $request->file('images'));
+        }
 
         return response()->json(new DishResource($dish), 201);
     }
