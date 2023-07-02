@@ -14,5 +14,6 @@ Dependencies:
 - https://www.twilio.com
   
 Database schema:
-![photo_2023-06-23_19-34-14](https://github.com/Rudey-ua/digital-restaurant-automation/assets/72936853/01e88a85-2068-44c8-aaf9-857c1830ad0a)
+
+![DB](https://github.com/Rudey-ua/digital-restaurant-automation/assets/72936853/4d68cfa6-3a10-4fb0-bb22-b5de2a303e18)
 
