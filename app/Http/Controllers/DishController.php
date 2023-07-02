@@ -12,6 +12,7 @@ use App\Http\Resources\Dish\DishCollection;
 use App\Models\Dish;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Pipeline;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class DishController extends Controller
 {
@@ -38,7 +39,18 @@ class DishController extends Controller
 
     public function store(StoreDishRequest $request): JsonResponse
     {
-        $dish = Dish::create($request->validated());
+        $data = $request->validated();
+        $dish = Dish::create($data);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $filename = time() . '.' . $image->getClientOriginalExtension();
+                $location = public_path('/images/' . $filename);
+                Image::make($image)->resize(800, 600)->save($location);
+
+                $dish->images()->create(['filename' => $filename]);
+            }
+        }
 
         return response()->json(new DishResource($dish), 201);
     }

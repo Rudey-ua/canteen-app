@@ -20,6 +20,7 @@ class DishResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "price" => $this->price,
+            'images' => $this->images->pluck('filename'),
             "category" => new CategoryResource($this->category),
             "ingredients" => $this->ingredients,
             "recipe" => $this->recipe,
