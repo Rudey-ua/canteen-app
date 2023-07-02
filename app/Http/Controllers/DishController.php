@@ -37,16 +37,16 @@ class DishController extends Controller
         return response()->json(new DishResource($dish));
     }
 
-    public function store(StoreDishRequest $request): JsonResponse
+    public function store(StoreDishRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->except('images');
         $dish = Dish::create($data);
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = time() . '.' . $image->getClientOriginalExtension();
-                $location = public_path('/images/' . $filename);
-                Image::make($image)->resize(800, 600)->save($location);
+                $location = storage_path('app/public/images/' . $filename);
+                Image::make($image)->save($location);
 
                 $dish->images()->create(['filename' => $filename]);
             }
