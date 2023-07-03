@@ -6,7 +6,6 @@ use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\Order\OrderResource;
 use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
-use App\Models\Reservation;
 use App\Models\Table;
 use App\Services\OrderService;
 use App\Services\PaymentService;
@@ -16,10 +15,6 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function __construct(private PaymentService $paymentService)
-    {
-    }
-
     public function index(): JsonResponse
     {
         $orders = Order::all();
@@ -34,16 +29,10 @@ class OrderController extends Controller
         return response()->json(new OrderResource($order));
     }
 
-    public function store(StoreOrderRequest $request): JsonResponse
+    public function store(StoreOrderRequest $request, OrderService $orderService): JsonResponse
     {
-        $order = OrderService::createOrder($request->validated());
-        $payment = OrderService::createPayment($order, $request->validated());
-
-        if (isset($request->validated()['table_id']))
-        {
-            $table = Table::findOrFail($request->validated()['table_id']);
-            $table->update(['status' => 'reserved']);
-        }
+        $order = $orderService->createOrder($request->validated());
+        $payment = $orderService->createPayment($order, $request->validated());
 
         return response()->json([
             'order' => new OrderResource($order),
@@ -57,13 +46,13 @@ class OrderController extends Controller
         return response()->json(null, 204);
     }
 
-    public function payOrderForTable(Table $table): JsonResponse
+    public function payOrderForTable(Table $table, PaymentService $paymentService): JsonResponse
     {
-        $order = $this->paymentService->findOrder($table);
+        $order = $paymentService->findOrder($table);
 
-        if(!$order) return $this->paymentService->orderNotFound();
+        if(!$order) return $paymentService->orderNotFound();
 
-        if($order->status == 'paid') return $this->paymentService->orderAlreadyPaid();
+        if($order->status == 'paid') return $paymentService->orderAlreadyPaid();
 
         $request = new Request;
         $request->replace(['order_id' => $order->id]);

@@ -5,23 +5,25 @@ namespace App\Services;
 use App\Models\Dish;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Table;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
-    public static function createOrder(array $validated): Order
+    public function createOrder(array $validated): Order
     {
         return DB::transaction(function () use ($validated) {
 
             $order = null;
 
             if (isset($validated['table_id'])) {
-                $order = self::createOrderFromArray(['table_id' => $validated['table_id']]);
+                $order = $this->createOrderFromArray(['table_id' => $validated['table_id']]);
+                $this->changeTableStatusToReserved($validated['table_id']);
             } else {
-                $order = self::createOrderFromArray(['reservation_id' => $validated['reservation_id']]);
+                $order = $this->createOrderFromArray(['reservation_id' => $validated['reservation_id']]);
             }
 
-            $totalAmount = self::addDishesToOrder($order, $validated['dishes']);
+            $totalAmount = $this->addDishesToOrder($order, $validated['dishes']);
 
             $order->total_amount = $totalAmount;
             $order->save();
@@ -30,7 +32,7 @@ class OrderService
         });
     }
 
-    private static function createOrderFromArray($data)
+    private function createOrderFromArray($data)
     {
         return Order::create([
             key($data) => current($data),
@@ -39,7 +41,7 @@ class OrderService
         ]);
     }
 
-    private static function addDishesToOrder(Order $order, array $dishes): float
+    private function addDishesToOrder(Order $order, array $dishes): float
     {
         $totalAmount = 0;
 
@@ -56,7 +58,13 @@ class OrderService
         return $totalAmount;
     }
 
-    public static function createPayment(Order $order, array $validated): Payment
+    private function changeTableStatusToReserved(int $tableId): void
+    {
+        $table = Table::findOrFail($tableId);
+        $table->update(['status' => 'reserved']);
+    }
+
+    public function createPayment(Order $order, array $validated): Payment
     {
         return Payment::create([
             'order_id' => $order->id,
