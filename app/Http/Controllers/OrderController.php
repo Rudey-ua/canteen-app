@@ -6,6 +6,7 @@ use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\Order\OrderResource;
 use App\Http\Resources\Order\OrderCollection;
 use App\Models\Order;
+use App\Models\Reservation;
 use App\Models\Table;
 use App\Services\OrderService;
 use App\Services\PaymentService;
@@ -31,6 +32,10 @@ class OrderController extends Controller
 
     public function store(StoreOrderRequest $request, OrderService $orderService): JsonResponse
     {
+        /*$reservation = Reservation::findOrFail($request->validated()['reservation_id']);
+        $reservation->status = 'accepted';
+        $reservation->save();*/
+
         $order = $orderService->createOrder($request->validated());
         $payment = $orderService->createPayment($order, $request->validated());
 
