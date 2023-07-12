@@ -42,12 +42,12 @@ class ReservationService
         $customer = User::findOrfail($bookingRequest->user_id);
         $message = "Ваше бронювання столу в ресторані {$restaurant->name} на {$bookingRequest->requested_for_date} успішно підтверджено!";
 
-        /*if ($customer->phone) {
+        if ($customer->phone) {
             try {
                 $this->twilio->sendSMS($customer->phone, $message);
             } catch (\Exception $e) {
                 Log::error('Error while sending SMS:' . $e->getMessage());
             }
-        }*/
+        }
     }
 }
