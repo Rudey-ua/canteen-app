@@ -64,4 +64,13 @@ class OrderController extends Controller
 
         return response()->json((new PaymentController)->store($request));
     }
+
+    public function getRestaurantOrders($restaurant_id): JsonResponse
+    {
+        $order = Order::where('restaurant_id', $restaurant_id)->get();
+
+        return response()->json([
+            "orders" => new OrderCollection($order)
+        ]);
+    }
 }

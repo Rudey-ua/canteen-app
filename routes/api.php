@@ -112,6 +112,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 Route::get('/orders', [OrderController::class, 'index']);
 Route::get('/orders/{order}', [OrderController::class, 'show']);
 
+Route::get('/restaurants/{restaurant_id}/orders', [OrderController::class, 'getRestaurantOrders']);
+
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::post('/orders', [OrderController::class, 'store']);
     Route::delete('/orders/{order}', [OrderController::class, 'destroy']);
