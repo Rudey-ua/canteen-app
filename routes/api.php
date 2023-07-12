@@ -88,6 +88,8 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 Route::get('/requests', [RequestController::class, 'index']);
 Route::get('/requests/{request}', [RequestController::class, 'show']);
 
+Route::get('/restaurants/{restaurant_id}/requests', [RequestController::class, 'getRestaurantRequests']);
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/requests', [RequestController::class, 'store']);
     Route::put('/requests/{request}', [RequestController::class, 'update']);

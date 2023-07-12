@@ -48,4 +48,13 @@ class RequestController extends Controller
         $request->delete();
         return response()->json(null, 204);
     }
+
+    public function getRestaurantRequests($restaurant_id): JsonResponse
+    {
+        $request = Request::where('restaurant_id', $restaurant_id)->get();
+
+        return response()->json([
+            'requests' => new RequestCollection($request),
+        ]);
+    }
 }
