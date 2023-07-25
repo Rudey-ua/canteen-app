@@ -4,10 +4,9 @@
     <title>Welcome Email</title>
 </head>
 <body>
-<h2>Welcome to Our Website {{ $user->name }}</h2>
-<br/>
-Your registered email-id is {{ $user->email }} , please click on the below link to verify your email account
-<br/>
-<a href="https://youtube.com/">Here is YouTube link</a>
+<h2>Welcome to ServeHub, {{ $user->name }}</h2>
+
+<img src="https://gifsec.com/wp-content/uploads/2022/09/welcome-gif-9.gif" alt="Добро пожаловать на ServeHub">
+
 </body>
 </html>
